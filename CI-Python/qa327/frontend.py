@@ -160,6 +160,11 @@ def profile(user):
     return render_template('index.html', user=user, tickets=tickets)
 
 
+
+@app.route('/*')
+def error():
+    return redirect('/', code=404)
+
 @app.route('/buy')
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def buy_ticket(user):
@@ -178,3 +183,4 @@ def sell_ticket(user):
     # This will then display the sell.html page
     ticket = bn.get_all_tickets()
     return render_template('sell.html', user=user, ticket=ticket)
+
