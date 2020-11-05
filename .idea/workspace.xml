@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="781ac739-7204-4da1-8a1e-1860fa2b7489" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CI-Python/qa327/frontend.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327/frontend.py" afterDir="false" />
-    </list>
+    <list default="true" id="781ac739-7204-4da1-8a1e-1860fa2b7489" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +13,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CI-Python/qa327/frontend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="87" column="41" lean-forward="true" selection-start-line="87" selection-start-column="41" selection-end-line="87" selection-end-column="41" />
+            <state relative-caret-position="539">
+              <caret line="62" column="60" selection-start-line="62" selection-start-column="60" selection-end-line="62" selection-end-column="60" />
               <folding>
                 <element signature="e#0#61#0" expanded="true" />
               </folding>
@@ -37,7 +34,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
     <option name="width" value="979" />
@@ -99,6 +96,14 @@
       <option name="presentableId" value="Default" />
       <updated>1604597565064</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added rapid prototypes for R1 and R8 specifications.">
+      <created>1604598171621</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1604598171621</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -124,6 +129,10 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added rapid prototypes for R1 and R8 specifications." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added rapid prototypes for R1 and R8 specifications." />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CI-Python/qa327/backend.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -137,8 +146,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CI-Python/qa327/frontend.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="87" column="41" lean-forward="true" selection-start-line="87" selection-start-column="41" selection-end-line="87" selection-end-column="41" />
+        <state relative-caret-position="539">
+          <caret line="62" column="60" selection-start-line="62" selection-start-column="60" selection-end-line="62" selection-end-column="60" />
           <folding>
             <element signature="e#0#61#0" expanded="true" />
           </folding>
