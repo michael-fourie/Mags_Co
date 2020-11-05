@@ -157,6 +157,5 @@ def profile(user):
 
 
 @app.route('/*')
-@authenticate
 def error():
     return redirect('/', code=404)
