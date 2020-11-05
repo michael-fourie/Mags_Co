@@ -1,6 +1,6 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
-import qa327 as bn
+import qa327.backend as bn
 import re
 
 """
@@ -88,6 +88,32 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     user = bn.login_user(email, password)
+
+    """
+    Validation for email/password. We must check for blank email or password, 
+    invalid password, and invalid email
+    """
+    if email == "" or password == "":
+        return render_template('login.html', message="Email/password cant be blank")
+
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    if not re.search(regex, email):
+        return render_template('login.html', message="Email format is incorrect")
+
+    specialChar = "!@#$%^&*()_-+=/"
+    special = False
+    upper = False
+    lower = False
+    for i in range(len(password)):
+        if password[i].isupper():
+            upper = True
+        if password[i].islower():
+            lower = True
+        if any(password[i] in word for word in specialChar):
+            special = True
+    if not upper or not lower or not special or len(password) < 6:
+        return render_template('login.html', message="Password format is incorrect")
+
     if user:
         session['logged_in'] = user.email
         """
@@ -158,7 +184,6 @@ def profile(user):
     # front-end portals
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
-
 
 
 @app.route('/*')
