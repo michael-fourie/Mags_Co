@@ -25,6 +25,9 @@ def register_post():
     password2 = request.form.get('password2')
     error_message = None
 
+    # for validation:
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]\w+{2,3}$'
+    specialCharacters = "!@#$%^&*+=~`-_/"
 
     if password != password2:
         error_message = "The passwords do not match"
@@ -32,13 +35,40 @@ def register_post():
     elif len(email) < 1:
         error_message = "Email format error"
 
-    elif len(password) < 1:
-        error_message = "Password not strong enough"
+    elif not re.search(regex, email):  # email must be in RFC5322 format
+        error_message = "Email not in RFC5322 format"
+
+    elif len(password) < 6:  # changed to < 6 to satisfy length requirement
+        error_message = "Password not long enough"
+
+    elif len(password > 5):  # check to make password is complex enough
+        upper = False
+        lower = False
+        special = False
+        for char in password:
+            if char.isupper():
+                upper = True
+            elif char.islower():
+                lower = True
+            elif any(char in specialChar for specialChar in specialCharacters):
+                special = True
+        if not upper or not lower or not special:
+            error_message = "Password is not strong enough"
+
+    elif len(name) <= 2 or len(name) >= 20:  # name is less than 2 characters or longer than 20 characters
+        error_message = "Name length formatting error"
+
+    elif not name.isalnum():  # name is not alpha-numeric
+        error_message = "Name is not alpha numeric"
+
+    elif name[0] == " " or name[-1] == " ":  # spaces are in the first or last index of string
+        error_message = "Spacing error in name"
+
     else:
         user = bn.get_user(email)
         if user:
-            error_message = "User exists"
-        elif not bn.register_user(email, name, password, password2):
+            error_message = "This email has already been used"  # changed error message to satisfy requirement
+        elif not bn.register_user(email, name, password, password2):  # new instance of user created
             error_message = "Failed to store user info."
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
@@ -114,7 +144,7 @@ def authenticate(inner_function):
     """
     :param inner_function: any python function that accepts a user object
 
-    Wrap any python function and check the current session to see if 
+    Wrap any python function and check the current session to see if
     the user has logged in. If login, it will call the inner_function
     with the logged in user object.
 
@@ -157,6 +187,25 @@ def profile(user):
 
 
 @app.route('/*')
-@authenticate
 def error():
     return redirect('/', code=404)
+
+@app.route('/buy')
+# @authenticate  # (??) not sure if we need this here to authenticate user
+def buy_ticket(user):
+    # This function will display the buy ticker page to the user
+    # We need the user information and the ticker information
+    # This will then display the buy.html page
+    ticket = bn.get_all_tickets()
+    return render_template('buy.html', user=user, ticket=ticket)
+
+
+@app.route('/sell')
+# @authenticate  # (??) not sure if we need this here to authenticate user
+def sell_ticket(user):
+    # This function will display the buy ticker page to the user
+    # We need the user information and the ticker information
+    # This will then display the sell.html page
+    ticket = bn.get_all_tickets()
+    return render_template('sell.html', user=user, ticket=ticket)
+
