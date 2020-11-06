@@ -50,6 +50,4 @@ def register_user(email, name, password, password2):
 
 
 def get_all_tickets():
-    return []
-
-
+    return Ticket.instances

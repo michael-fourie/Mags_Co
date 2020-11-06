@@ -5,18 +5,61 @@
 {% endblock %}
 
 {% block content %}
-<h2 id="welcome-header">Welcome {{ user.name }} !</h2>
+<h2 id="welcome-header">Hi {{ user.name }} !</h2>
 
+<div>
+  <p>Your current balance is: {{ user.balance }}</p>
+</div>
 
 <h2 >Here are all available tickets</h2>
 
 <div id="tickets">
-{% for ticket in tickets %}
+{% for ticket in tickets.instances %}
     <div>
         <h4>{{ ticket.name }} {{ ticket.price }}</h4>
     </div>
 {% endfor %}
 </div>
+
+<div>
+  <h4>Sell Ticket</h4>
+  <form method="POST" id="form_sell">
+    <label for="name">Name:</label>
+    <input type="text" id="name_sell" name="name"><br><br>
+    <label for="quantity">Quanity:</label>
+    <input type="text" id="quantity_sell" name="quantity"><br><br>
+    <label for="price">Price:</label>
+    <input type="text" id="price_sell" name="price"><br><br>
+    <label for="exp_date">Expiration date:</label>
+    <input type="text" id="exp_date_sell" name="exp_date"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <br>
+  <h4>Buy Ticket</h4>
+  <form method="POST" id="form_buy">
+    <label for="name">Name:</label>
+    <input type="text" id="name_buy" name="name"><br><br>
+    <label for="quantity">Quanity:</label>
+    <input type="text" id="quantity_buy" name="quantity"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <br>
+  <h4>Update Ticket</h4>
+  <form method="POST" id="form_update">
+    <label for="name">Name:</label>
+    <input type="text" id="name_update" name="name"><br><br>
+    <label for="quantity">Quanity:</label>
+    <input type="text" id="quantity_update" name="quantity"><br><br>
+    <label for="price">Price:</label>
+    <input type="text" id="price_update" name="price"><br><br>
+    <label for="exp_date">Expiration date:</label>
+    <input type="text" id="exp_date_update" name="exp_date"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
 
 <a href='/logout'>logout</a>
 {% endblock %}
