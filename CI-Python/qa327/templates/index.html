@@ -14,7 +14,7 @@
 <h2 >Here are all available tickets</h2>
 
 <div id="tickets">
-{% for ticket in tickets %}
+{% for ticket in tickets.instances %}
     <div>
         <h4>{{ ticket.name }} {{ ticket.price }}</h4>
     </div>
@@ -23,7 +23,7 @@
 
 <div>
   <h4>Sell Ticket</h4>
-  <form method="GET" id="form_sell">
+  <form method="POST" id="form_sell">
     <label for="name">Name:</label>
     <input type="text" id="name_sell" name="name"><br><br>
     <label for="quantity">Quanity:</label>
@@ -32,22 +32,22 @@
     <input type="text" id="price_sell" name="price"><br><br>
     <label for="exp_date">Expiration date:</label>
     <input type="text" id="exp_date_sell" name="exp_date"><br><br>
-    <input onclick="redirect('/sell')" type="submit" value="Submit">
+    <input type="submit" value="Submit">
   </form>
 
   <br>
   <h4>Buy Ticket</h4>
-  <form method="GET" id="form_buy">
+  <form method="POST" id="form_buy">
     <label for="name">Name:</label>
     <input type="text" id="name_buy" name="name"><br><br>
     <label for="quantity">Quanity:</label>
     <input type="text" id="quantity_buy" name="quantity"><br><br>
-    <input onclick="redirect('/buy')" type="submit" value="Submit">
+    <input type="submit" value="Submit">
   </form>
 
   <br>
   <h4>Update Ticket</h4>
-  <form method="GET" id="form_update">
+  <form method="POST" id="form_update">
     <label for="name">Name:</label>
     <input type="text" id="name_update" name="name"><br><br>
     <label for="quantity">Quanity:</label>
@@ -56,7 +56,7 @@
     <input type="text" id="price_update" name="price"><br><br>
     <label for="exp_date">Expiration date:</label>
     <input type="text" id="exp_date_update" name="exp_date"><br><br>
-    <input onclick="redirect('/update')" type="submit" value="Submit">
+    <input type="submit" value="Submit">
   </form>
 </div>
 
