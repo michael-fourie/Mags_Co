@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<h2 id="welcome-header">Welcome {{ user.name }} !</h2>
+<h2 id="welcome-header">Hi {{ user.name }} !</h2>
 
 <div>
-  <p>Your current balance is:</p>
+  <p>Your current balance is: {{ user.balance }}</p>
 </div>
 
 <h2 >Here are all available tickets</h2>
