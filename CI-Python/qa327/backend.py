@@ -85,4 +85,3 @@ def register_ticket(owner, name, quantity, price, date):
 
     return None
 
-
