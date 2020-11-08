@@ -1,4 +1,4 @@
-from flask import render_template, request, session, redirect
+from flask import render_template, request, session, redirect, logout_user
 from qa327 import app
 import qa327.backend as bn
 import re
@@ -137,6 +137,8 @@ def login_post():
 def logout():
     if 'logged_in' in session:
         session.pop('logged_in', None)
+        logout_user()
+        
     return redirect('/')
 
 
