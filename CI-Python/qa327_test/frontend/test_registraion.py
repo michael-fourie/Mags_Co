@@ -83,3 +83,14 @@ class FrontEndHomePageTest(BaseCase):
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("login failed", "#message")
+
+    # def test_not_loggedin(self, *_):
+    #     """If the user hasnt logged in, show the login page"""
+    #     #Open the logout page to invalidate any logged-in session
+    #     self.open(base_url + '/logout')
+    #     #open the login page
+    #     self.open(base_url + '/login')
+    #     #make sure it shows the proper page and message
+    #     self.assert_element("#message")cd
+    #     self.asset_text("")
+
