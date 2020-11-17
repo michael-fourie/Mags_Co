@@ -32,7 +32,8 @@ class Ticket(db.Model):
     """
     A ticket model which holds information about a ticket
     """
-    owner = db.Column(db.String(100), unique=True)  # owner of ticket
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)  # owner of ticket
     name = db.Column(db.String(1000))               # name of ticket
     quantity = db.Column(db.Integer)                # quantity of this ticket
     price = db.Column(db.Integer)                   # price of ticket of this type
