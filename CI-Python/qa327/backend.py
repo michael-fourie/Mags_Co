@@ -30,6 +30,8 @@ def login_user(email, password):
     return user
 
 
+
+
 def register_user(email, name, password, password2):
     """
     Register the user to the database
@@ -48,8 +50,38 @@ def register_user(email, name, password, password2):
     db.session.commit()
     return None
 
+def get_ticket(name):
+    """Get a ticket by a given ticket name
+    :param name: name of the ticket desired
+    :return: ticket object with name: name """
+
+    ticket = Ticket.query.filter_by(name=name).first()
+    return ticket
 
 def get_all_tickets():
-    return []
+    """Get all instances of tickets available
+    :param: none
+    :return: list of all ticket instances
+    """
 
+    list_of_tickets = []
+    for t in Ticket.instances:
+        list_of_tickets.append(t)
+    return list_of_tickets
+
+def register_ticket(owner, name, quantity, price, date):
+    """Register the ticket in the database
+    :param owner: The user selling the ticket
+    :param name: the name of the ticket
+    :param quantity: quantity available of the ticket
+    :param price: the price of each ticket
+    :param date: the date for ticket use
+    :return: an error message if there is any, or None if action succeeds."""
+
+    new_ticket = Ticket(owner=owner, name=name, quantit=quantity, price=price, date=date)
+
+    db.session.add(new_ticket)
+    db.session.commit()
+
+    return None
 
