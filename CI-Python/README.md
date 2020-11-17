@@ -1,6 +1,6 @@
 # GitHub Actions CI Template for Selenium+Flask MVC
 
-[![](https://github.com/michael-fourie/Mags_Co/CI-Python/workflows/Python%20application/badge.svg)](https://github.com/michael-fourie/Mags_Co/actions)
+[![](https://github.com/michael-fourie/mags_co/workflows/Python%20application/badge.svg)]()
 
 ## Instructions: 
 
