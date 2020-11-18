@@ -58,8 +58,10 @@ def register_post():
     elif len(name) <= 2 or len(name) >= 20:  # name is less than 2 characters or longer than 20 characters
         error_message = "Name length formatting error"
 
-    elif not name.isalnum():  # name is not alpha-numeric
-        error_message = "Name is not alpha numeric"
+    elif len(name) > 2:  # name is not alpha-numeric
+        for char in name:
+            if (not char.isalnum()) or (not char.isspace()):
+                error_message = "Name contains special characters"
 
     elif name[0] == " " or name[-1] == " ":  # spaces are in the first or last index of string
         error_message = "Spacing error in name"

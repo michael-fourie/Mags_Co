@@ -1,0 +1,22 @@
+test_registration.Registered.test_register_login
+----------------------------------------------------
+Last Page: http://localhost:8081/login
+  Browser: chrome
+Timestamp: 1605729377  (Unix Timestamp)
+     Date: Wednesday, November 18, 2020
+     Time: 12:56:17 PM  (MDT, UTC-07:00)
+----------------------------------------------------
+Traceback: File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/unittest/case.py", line 615, in run
+    testMethod()
+  File "/Users/annawood/Documents/GitHub/Mags_Co/CI-Python/qa327_test/integration/test_registration.py", line 34, in test_register_login
+    self.assert_element("#welcome-header")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/base_case.py", line 5038, in assert_element
+    self.wait_for_element_visible(selector, by=by, timeout=timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/base_case.py", line 3381, in wait_for_element_visible
+    self.driver, selector, by, timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/page_actions.py", line 299, in wait_for_element_visible
+    timeout_exception(NoSuchElementException, message)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/page_actions.py", line 117, in timeout_exception
+    raise exc(message)
+Exception: Message: 
+ Element {#welcome-header} was not present after 6 seconds!
