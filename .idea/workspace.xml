@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="781ac739-7204-4da1-8a1e-1860fa2b7489" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CI-Python/qa327/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327/backend.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CI-Python/qa327/frontend.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327/frontend.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_registraion.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_registraion.py" afterDir="false" />
     </list>
+=======
+    <list default="true" id="781ac739-7204-4da1-8a1e-1860fa2b7489" name="Default Changelist" comment="" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,24 +20,39 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CI-Python/qa327/frontend.py">
+        <entry file="file://$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_registraion.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="-1258">
               <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
               <folding>
                 <element signature="e#0#61#0" expanded="true" />
+=======
+            <state relative-caret-position="77">
+              <caret line="84" column="52" selection-start-line="84" selection-start-column="52" selection-end-line="84" selection-end-column="52" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_registraion.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="38" column="31" selection-start-line="38" selection-start-column="31" selection-end-line="38" selection-end-column="31" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CI-Python/qa327/frontend.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1211">
+              <caret line="186" column="8" selection-start-line="186" selection-start-column="4" selection-end-line="186" selection-end-column="8" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#0#74#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -42,8 +61,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CI-Python/qa327/models.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="462">
               <caret line="37" column="49" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
+=======
+            <state relative-caret-position="211">
+              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -52,10 +76,16 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/CI-Python/qa327/backend.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="244">
               <caret line="27" selection-start-line="27" selection-end-line="27" />
+=======
+        <entry file="file://$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_connection.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -85,10 +115,18 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="951" />
     <option name="width" value="978" />
     <option name="height" value="1039" />
+=======
+  <component name="ProjectFrameBounds">
+    <option name="x" value="443" />
+    <option name="y" value="77" />
+    <option name="width" value="1440" />
+    <option name="height" value="877" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -112,20 +150,13 @@
               <item name="Mags_Co" type="b2602c69:ProjectViewProjectNode" />
               <item name="Mags_Co" type="462c0819:PsiDirectoryNode" />
               <item name="CI-Python" type="462c0819:PsiDirectoryNode" />
+              <item name=".github" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Mags_Co" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Mags_Co" type="462c0819:PsiDirectoryNode" />
+              <item name="CI-Python" type="462c0819:PsiDirectoryNode" />
               <item name="qa327" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mags_Co" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mags_Co" type="462c0819:PsiDirectoryNode" />
-              <item name="CI-Python" type="462c0819:PsiDirectoryNode" />
-              <item name="qa327_test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mags_Co" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mags_Co" type="462c0819:PsiDirectoryNode" />
-              <item name="CI-Python" type="462c0819:PsiDirectoryNode" />
-              <item name="qa327_test" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -201,9 +232,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="443" y="77" width="1440" height="877" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15862525" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15856236" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -214,7 +245,11 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+<<<<<<< HEAD
       <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.22946176" />
+=======
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.55643046" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -259,17 +294,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CI-Python/qa327/__main__.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="34">
           <caret line="2" column="3" lean-forward="true" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
+=======
+        <state relative-caret-position="77">
+          <caret line="84" column="52" selection-start-line="84" selection-start-column="52" selection-end-line="84" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CI-Python/qa327/frontend.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-1258">
           <caret line="10" column="3" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
           <folding>
             <element signature="e#0#61#0" expanded="true" />
+=======
+        <state relative-caret-position="1211">
+          <caret line="186" column="8" selection-start-line="186" selection-start-column="4" selection-end-line="186" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#74#0" expanded="true" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
           </folding>
         </state>
       </provider>
@@ -286,8 +336,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/CI-Python/qa327/models.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="462">
           <caret line="37" column="49" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
+=======
+        <state relative-caret-position="211">
+          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+>>>>>>> 6597cd27a45f9419789edfe25a495365375d3602
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
