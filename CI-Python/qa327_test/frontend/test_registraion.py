@@ -86,6 +86,7 @@ class FrontEndHomePageTest(BaseCase):
 
     def test_not_loggedin(self, *_):
         """If the user hasnt logged in, show the login page"""
+        """R1.1"""
         #Open the logout page to invalidate any logged-in session
         self.open(base_url + '/logout')
         #open the login page
@@ -94,3 +95,13 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Please login", "#message")
 
+    def test_login_message(self, *_):
+        """The login page has that by deafult says 'please login"""
+        """R1.2"""
+        # Open the logout page to invalidate any logged-in session
+        self.open(base_url + '/logout')
+        # open the login page
+        self.open(base_url + '/login')
+        # make sure it shows the proper page and message
+        self.assert_element("#message")
+        self.assert_text("Please login", "#message")
