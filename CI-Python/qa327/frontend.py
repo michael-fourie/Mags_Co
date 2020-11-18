@@ -1,4 +1,4 @@
-from flask import render_template, request, session, redirect
+from flask import render_template, request, session, redirect, url_for
 from qa327 import app
 import qa327.backend as bn
 import re
@@ -111,8 +111,8 @@ def login_post():
             lower = True
         if any(password[i] in word for word in specialChar):
             special = True
-    if not upper or not lower or not special or len(password) < 6:
-        return render_template('login.html', message="Password format is incorrect")
+    if not upper or not lower or not special or (len(password) < 6):
+        return render_template('login.html', message="Incorrect Password")
 
     if user:
         session['logged_in'] = user.email
@@ -128,7 +128,7 @@ def login_post():
         """
         # success! go back to the home page
         # code 303 is to force a 'GET' request
-        return redirect('/', code=303)
+        return redirect(url_for(profile), code=303)
     else:
         return render_template('login.html', message='login failed')
 

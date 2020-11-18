@@ -25,6 +25,7 @@ def login_user(email, password):
     """
     # if this returns a user, then the name already exists in database
     user = get_user(email)
+
     if not user or not check_password_hash(user.password, password):
         return None
     return user

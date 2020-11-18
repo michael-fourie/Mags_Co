@@ -36,7 +36,7 @@ test_tickets = [
 
 class FrontEndHomePageTest(BaseCase):
 
-    @patch('qa327.backend.get_user', return_value=test_user)
+    @patch('qa327.backend.login_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_login_success(self, *_):
         """
@@ -47,7 +47,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/login')
         # fill email and password
         self.type("#email", "test_frontend@test.com")
-        self.type("#password", "test_frontend")
+        self.type("#password", "Test_frontend@1")
         # click enter button
         self.click('input[type="submit"]')
         
@@ -82,7 +82,7 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # make sure it shows proper error message
         self.assert_element("#message")
-        self.assert_text("login failed", "#message")
+        self.assert_text("Incorrect Password", "#message")
 
     # def test_not_loggedin(self, *_):
     #     """If the user hasnt logged in, show the login page"""
