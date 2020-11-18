@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-<h2 id="welcome-header">Hi {{ user.name }} !</h2>
+<h2 id="welcome-header">Welcome {{ user.name }}</h2>
 
 <div>
   <p>Your current balance is: {{ user.balance }}</p>
@@ -13,7 +13,7 @@
 
 <h2 >Here are all available tickets</h2>
 
-<div id="tickets">
+<div id="tickets div h4">
 {% for ticket in tickets.instances %}
     <div>
         <h4>{{ ticket.name }} {{ ticket.price }}</h4>
