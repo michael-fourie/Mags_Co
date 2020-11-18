@@ -136,7 +136,6 @@ def login_post():
 def logout():
     if 'logged_in' in session:
         session.pop('logged_in', None)
-        logout_user()
         
     return redirect('/')
 

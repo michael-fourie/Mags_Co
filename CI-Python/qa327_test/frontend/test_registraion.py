@@ -21,14 +21,21 @@ the user from the database.
 Annotate @patch before unit tests can mock backend methods (for that testing function)
 """
 
-# Moch a sample user
+# Mock a sample user
 test_user = User(
     email='test_frontend@test.com',
     name='test_frontend',
-    password=generate_password_hash('Test_frontend@')
+    password=generate_password_hash('Test_frontend@1')
 )
+#Mock a sample registration user
+test_user_register = User(
+    email='register@test.ca',
+    name='name_register',
+    password=generate_password_hash('name_registe@1r'),
+    password2=generate_password_hash('name_register@1')
+    )
 
-# Moch some sample tickets
+# Mock some sample tickets
 test_tickets = [
     {'name': 't1', 'price': '100'}
 ]
@@ -93,4 +100,62 @@ class FrontEndHomePageTest(BaseCase):
     #     #make sure it shows the proper page and message
     #     self.assert_element("#message")cd
     #     self.asset_text("")
+
+    @patch('qa327.backend.get_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_has_logged_in(self, *_):  # R2.1 R2.2 [GET]
+        """If the user hasn't logged in, show the login page"""
+        # Open the logout page to invalidate any logged-in session
+        # log out any previous users
+        self.open(base_url, '/logout')
+        # open login page
+        self.open(base_url + '/login')
+        # fill email and password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@1")
+        # click enter button
+        self.click('input[type="submit"]')
+        # open register page
+        self.open(base_url + '/register')  # Here should redirect to home page somehow. or the register
+        # if they didn't log in
+        # make sure it shows the proper page and message
+        self.assert_element("#welcome-header")
+        self.assert_text("Welcome test_frontend", "#welcome-header")
+
+    def test_register_page(self, *_):  # R2.3 [GET]
+        ''' The registration page shows a registration from requesting email, username,
+        password, password2 '''
+        # log out any previous users
+        self.open(base_url, '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # validate that proper page and message are showing (Just '' for register page)
+        self.assert_element("#message")
+        self.asset_text("")
+
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register(self, *_):  # R2.4 [POST]
+        '''The registration form can be submitted as a POST request to current URL'''
+        # log out any previous users
+        self.open(base_url, '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "test_frontend@test.com")
+        #enter name into element
+        self.type("#name",'name_register' )
+        # enter password1 into element
+        self.type("#password", 'name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        #validate user profile creation is successful
+        #validate redirection to login
+        self.assert_element("#message")
+        self.asset_text("")
+
+
+
 
