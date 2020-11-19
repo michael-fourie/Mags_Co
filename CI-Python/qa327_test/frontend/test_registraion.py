@@ -427,8 +427,8 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#logout-link")
 
     @patch('qa327.backend.get_user', return_value=test_user)
-    def test_sell_buy(self, *_):
-        """Validate buy form and fields name, quantity, price, exp date exist"""
+    def test_form_sell(self, *_):
+        """Validate sell form and fields name, quantity, price, exp date exist"""
         # Open the logout page to invalidate any logged-in session
         self.open(base_url + '/logout')
         # open the login page
@@ -446,7 +446,7 @@ class FrontEndHomePageTest(BaseCase):
 
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_form_buy(self, *_):
-        """Validate buy form and fields name, quantity, price, exp date exist"""
+        """Validate buy form and fields name, quantity exist"""
         # Open the logout page to invalidate any logged-in session
         self.open(base_url + '/logout')
         # open the login page
