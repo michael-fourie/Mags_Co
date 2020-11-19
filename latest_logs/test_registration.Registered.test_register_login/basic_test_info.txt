@@ -2,9 +2,9 @@ test_registration.Registered.test_register_login
 ----------------------------------------------------
 Last Page: http://localhost:8081/login
   Browser: chrome
-Timestamp: 1605729377  (Unix Timestamp)
+Timestamp: 1605747654  (Unix Timestamp)
      Date: Wednesday, November 18, 2020
-     Time: 12:56:17 PM  (MDT, UTC-07:00)
+     Time: 6:00:54 PM  (MDT, UTC-07:00)
 ----------------------------------------------------
 Traceback: File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/unittest/case.py", line 615, in run
     testMethod()

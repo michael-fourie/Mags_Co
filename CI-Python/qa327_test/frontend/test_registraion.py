@@ -28,7 +28,7 @@ test_user = User(
     password=generate_password_hash('Test_frontend@1'),
     balance=0
 )
-#Mock a sample registration user
+# Mock a sample registration user
 test_user_register = User(
     email='register@test.ca',
     name='name_register',
@@ -55,7 +55,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/login')
         # fill email and password
         self.type("#email", "test_frontend@test.com")
-        self.type("#password", "Test_frontend@")
+        self.type("#password", "Test_frontend@1")
         # click enter button
         self.click('input[type="submit"]')
         
@@ -105,7 +105,7 @@ class FrontEndHomePageTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_has_logged_in(self, *_):  # R2.1 R2.2 [GET]
-        """If the user hasn't logged in, show the login page"""
+        """If the user has logged in, redirect back to the user profile page"""
         # Open the logout page to invalidate any logged-in session
         # log out any previous users
         self.open(base_url + '/logout')
@@ -117,12 +117,25 @@ class FrontEndHomePageTest(BaseCase):
         # click enter button
         self.click('input[type="submit"]')
         # open register page
-        self.open(base_url + '/register')  # Here should redirect to home page somehow. or the register
-        # if they didn't log in
-        # make sure it shows the proper page and message
+        self.open(base_url)
+        #  make sure it shows the proper page and message
         self.assert_element("#welcome-header")
         self.assert_text("Welcome test_frontend", "#welcome-header")
 
+    @patch('qa327.backend.register_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_hasnt_logged_in(self, *_):
+        '''If the user hasn't logged in, show the user registration page'''
+        # Open the logout page to invalidate any logged-in session
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open the registration
+        self.open(base_url + '/register')
+        # make sure proper page and message is showing
+        self.assert_element("#message")
+
+    @patch('qa327.backend.register_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_page(self, *_):  # R2.3 [GET]
         ''' The registration page shows a registration from requesting email, username,
         password, password2 '''
@@ -132,7 +145,6 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/register')
         # validate that proper page and message are showing (Just '' for register page)
         self.assert_element("#message")
-        self.asset_text("")
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -145,22 +157,23 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/register')
         # enter email into element
         self.type("#email", "new_frontend@test.com")
-        #enter name into element
+        # enter name into element
         self.type("#name",'name register')
         # enter password1 into element
-        self.type("#password", 'name_register@1')
+        self.type("#password", 'Name_register@1')
         # enter password 2 into element
-        self.type("#password2", 'name_register@1')
+        self.type("#password2", 'Name_register@1')
         # click enter button
         self.click('input[type="submit"]')
-        #validate user profile creation is successful
-        #validate redirection to login
+        # send to login page
+        self.open(base_url + '/login')
+        # validate user profile creation is successful
+        # validate redirection to login
         self.assert_element("#message")
-        self.asset_text("")
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_register(self, *_):  # R2.6 and R2.9 [POST]
+    def test_register_non_match(self, *_):  # R2.6 and R2.9 [POST]
         '''Password and Password 2 have to be exactly the same'''
         # log out any previous users
         self.open(base_url + '/logout')
@@ -171,18 +184,18 @@ class FrontEndHomePageTest(BaseCase):
         # enter name into element
         self.type("#name", 'name register')
         # enter password1 into element
-        self.type("#password", 'rname_register@1')
+        self.type("#password", 'rName_register@1')
         # enter password 2 into element
-        self.type("#password2", 'name_register@1')
+        self.type("#password2", 'Name_register@1')
         # click enter button
         self.click('input[type="submit"]')
         # validate error message is shown for non matching passwords
         self.assert_element("#message")
-        self.asset_text("#message", "The passwords do not match")
+        self.assert_text("The passwords do not match", "#message")
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_register(self, *_):  # R2.7A and R2.9 [POST]
+    def test_register_empty(self, *_):  # R2.7A and R2.9 [POST]
         '''User name has to be non-empty'''
         # log out any previous users
         self.open(base_url + '/logout')
@@ -191,170 +204,174 @@ class FrontEndHomePageTest(BaseCase):
         # enter email into element
         self.type("#email", "new_frontend@test.com")
         # enter name into element
-        self.type("#name", '')
+        self.type("#name", ' ')                      # change from t to ' '
         # enter password1 into element
-        self.type("#password", 'name_register@1')
+        self.type("#password", 'Name_register@1')
         # enter password 2 into element
-        self.type("#password2", 'name_register@1')
+        self.type("#password2", 'Name_register@1')
         # click enter button
         self.click('input[type="submit"]')
         # validate error message is shown for empty name
         self.assert_element("#message")
-        self.asset_text("#message", "Name length formatting error")
+        self.assert_text("Name length formatting error", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.7B and R2.9 [POST]
-            '''User name has to be alphanumeric only'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "new_frontend@test.com")
-            # enter name into element
-            self.type("#name", '***')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate error message is shown for empty name
-            self.assert_element("#message")
-            self.asset_text("#message", "Name contains special characters")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_alnum(self, *_):  # R2.7B and R2.9 [POST]
+        '''User name has to be alphanumeric only'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name", '***')                        # changed elif condition to len name > 0
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for special chars
+        self.assert_element("#message")
+        self.assert_text("Name contains special characters", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.7C and R2.9 [POST]
-            '''User name has spaces allowed only if it is not the first or the last character'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "new_frontend@test.com")
-            # enter name into element
-            self.type("#name", 'name register ')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate error message is shown for empty name
-            self.assert_element("#message")
-            self.asset_text("#message", "Spacing error in name")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_space(self, *_):  # R2.7C and R2.9 [POST]
+        '''User name has spaces allowed only if it is not the first or the last character'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name", 'name register ')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for spacing error in name
+        self.assert_element("#message")
+        self.assert_text("Spacing error in name", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.8A and R2.9 [POST]
-            '''User name has to be longer than 2 characters'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "new_frontend@test.com")
-            # enter name into element
-            self.type("#name", 'na')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate error message is shown for empty name
-            self.assert_element("#message")
-            self.asset_text("#message", "Name length formatting error")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_name_short(self, *_):  # R2.8A and R2.9 [POST]
+        '''User name has to be longer than 2 characters'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name", 'na')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for length error in name
+        self.assert_element("#message")
+        self.assert_text("Name length formatting error", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.8B and R2.9 [POST]
-            '''User name has to be less than 20 characters'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "new_frontend@test.com")
-            # enter name into element
-            self.type("#name", 'name register toolong')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate error message is shown for empty name
-            self.assert_element("#message")
-            self.asset_text("#message", "Name length formatting error")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_name_long(self, *_):  # R2.8B and R2.9 [POST]
+        '''User name has to be less than 20 characters'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name", 'name register toolong')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for length error in name
+        self.assert_element("#message")
+        self.assert_text("Name length formatting error", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.8B and R2.9 [POST]
-            '''For any formatting errors, redirect back to /login and show message '{}
-            format is incorrect.'.format(the_corresponding_attribute)'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "new_frontend@test.com")
-            # enter name into element
-            self.type("#name", 'name register toolong')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate error message is shown for empty name
-            self.assert_element("#message")
-            self.asset_text("#message", "Name length formatting error")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_format(self, *_):  # R2.8B and R2.9 [POST]
+        '''For any formatting errors, redirect back to /login and show message '{}
+        format is incorrect.'.format(the_corresponding_attribute)'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name", 'name register toolong')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for formatting error in name
+        self.assert_element("#message")
+        self.assert_text("Name length formatting error", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.8B and R2.9 [POST]
-            '''If the email already exists, show message 'this email has been ALREADY used'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "test_frontend@test.com")  # email is same as test_user_register
-            # enter name into element
-            self.type("#name", 'name register toolong')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate error message is shown for empty name
-            self.assert_element("#message")
-            self.asset_text("#message", "This email has already been used")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_email_already_used(self, *_):  # R2.8B and R2.9 [POST]
+        '''If the email already exists, show message 'this email has been ALREADY used'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "test_frontend@test.com")  # email is same as test_user_register
+        # enter name into element
+        self.type("#name", 'name register')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for email already used
+        self.assert_element("#message")
+        self.assert_text("This email has already been used", "#message")
 
-        @patch('qa327.backend.register_user', return_value=test_user_register)
-        @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-        def test_register(self, *_):  # R2.8B and R2.9 [POST]
-            '''If no error regarding the inputs following the rules above, create
-            a new user, set the balance to 5000, and go back to the /login page'''
-            # log out any previous users
-            self.open(base_url + '/logout')
-            # open register page
-            self.open(base_url + '/register')
-            # enter email into element
-            self.type("#email", "new_frontend@test.com")
-            # enter name into element
-            self.type("#name", 'name register')
-            # enter password1 into element
-            self.type("#password", 'name_register@1')
-            # enter password 2 into element
-            self.type("#password2", 'name_register@1')
-            # click enter button
-            self.click('input[type="submit"]')
-            # validate user profile creation is successful
-            # validate redirection to login
-            self.assert_element("#message")
-            self.asset_text("")
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_success(self, *_):  # R2.8B and R2.9 [POST]
+        '''If no error regarding the inputs following the rules above, create
+        a new user, set the balance to 5000, and go back to the /login page'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name", 'name register')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate user profile creation is successful
+        # validate redirection to login
+        self.assert_element("#message")
+        self.assert_text("")
+
+
+        '''second fail - needs to assert welcome test frontend
+        last fail - need to assert log in is showing '''

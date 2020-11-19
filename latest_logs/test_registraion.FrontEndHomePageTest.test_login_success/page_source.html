@@ -20,7 +20,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="https://l1nna.com/black-assets/img/apple-icon.png" />
     <link rel="icon" type="image/x-icon" href="https://l1nna.com/images/favicon.ico" />
 
-    <title>Log In</title>
+    <title>Profile</title>
 
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -118,18 +118,59 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         
-<h1>Log In</h1>
-<h4 id="message">Please login</h4>
-<form method="post">
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input class="form-control" name="email" id="email" required="" />
-    <label for="password">Password</label>
-    <input class="form-control" type="password" name="password" id="password" required="" />
-    <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Log In" />
-  </div>
-</form>
-<a href="/register">Register</a>
+<h2 id="welcome-header">Welcome test_frontend</h2>
+
+<div>
+  <p>Your current balance is: 0</p>
+</div>
+
+<h2>Here are all available tickets</h2>
+
+<div id="tickets div h4">
+
+</div>
+
+<div>
+  <h4>Sell Ticket</h4>
+  <form method="POST" id="form_sell">
+    <label for="name">Name:</label>
+    <input type="text" id="name_sell" name="name" /><br /><br />
+    <label for="quantity">Quanity:</label>
+    <input type="text" id="quantity_sell" name="quantity" /><br /><br />
+    <label for="price">Price:</label>
+    <input type="text" id="price_sell" name="price" /><br /><br />
+    <label for="exp_date">Expiration date:</label>
+    <input type="text" id="exp_date_sell" name="exp_date" /><br /><br />
+    <input type="submit" value="Submit" />
+  </form>
+
+  <br />
+  <h4>Buy Ticket</h4>
+  <form method="POST" id="form_buy">
+    <label for="name">Name:</label>
+    <input type="text" id="name_buy" name="name" /><br /><br />
+    <label for="quantity">Quanity:</label>
+    <input type="text" id="quantity_buy" name="quantity" /><br /><br />
+    <input type="submit" value="Submit" />
+  </form>
+
+  <br />
+  <h4>Update Ticket</h4>
+  <form method="POST" id="form_update">
+    <label for="name">Name:</label>
+    <input type="text" id="name_update" name="name" /><br /><br />
+    <label for="quantity">Quanity:</label>
+    <input type="text" id="quantity_update" name="quantity" /><br /><br />
+    <label for="price">Price:</label>
+    <input type="text" id="price_update" name="price" /><br /><br />
+    <label for="exp_date">Expiration date:</label>
+    <input type="text" id="exp_date_update" name="exp_date" /><br /><br />
+    <input type="submit" value="Submit" />
+  </form>
+</div>
+
+
+<a href="/logout">logout</a>
 
                     </div>
                 </div>
