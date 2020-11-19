@@ -192,8 +192,10 @@ class FrontEndHomePageTest(BaseCase):
     def test_invalid_password(self, *_):
         """Password has to meet requried complexity"""
         """R1.8"""
+        # logout user to invalidate any logged in user
         self.open(base_url + "/logout")
         self.open(base_url + '/login')
+        # enter an invalid password
         self.type("#password", "invld")
         self.type("#email", "test_frontend@test.com")
         self.click('input[type="submit"]')
@@ -205,10 +207,13 @@ class FrontEndHomePageTest(BaseCase):
         """For any formatting error, render the login page and show the message
         'email / password format is incorrect '
         R1.9"""
+        #Logout user to invalidate any logged in user
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
+        #Input invalid user and password
         self.type("#email", "invalidemail")
         self.type("#password", "invalidpassword")
+
         self.click('input[type="submit"]')
         self.assert_element("#message")
         self.assert_text("Email/Password format is incorrect", "#message")
@@ -237,6 +242,7 @@ class FrontEndHomePageTest(BaseCase):
         """Otherwise, redirect /login and show message 'email/password
         combination incorrect"""
         """R1.11"""
+        #Logut to invalidate any logged user
         self.open(base_url + "/logout")
         self.open(base_url + "/login")
         # fill invalid email and password
