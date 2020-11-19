@@ -366,10 +366,3 @@ class FrontEndHomePageTest(BaseCase):
         # validate user profile creation is successful
         # validate redirection to login
         self.assert_element("#message")
-
-        """ Changed register button type to "reg-submit" to avoid an internal server error when clicking.
-            To avoid server error, now button does not respond to being clicked. 
-            No error messages show up / nothing responds after button is clicked,
-            but information is entered in fine.
-            Possibly due to using the mock test_user? But when removed this does not 
-            affect the outcome"""
