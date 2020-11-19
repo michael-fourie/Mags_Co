@@ -91,6 +91,7 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Incorrect Password", "#message")
 
+
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_has_logged_in(self, *_):  # R2.1 R2.2 [GET]
@@ -338,6 +339,7 @@ class FrontEndHomePageTest(BaseCase):
         # validate error message is shown for email already used
         self.assert_element("#message")
         self.assert_text("This email has already been used", "#message")
+
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
