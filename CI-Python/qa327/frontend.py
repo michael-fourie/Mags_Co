@@ -97,7 +97,7 @@ def login_post():
 
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     if not re.search(regex, email):
-        return render_template('login.html', message="Email format is incorrect")
+        return render_template('login.html', message="Email/Password format is incorrect")
 
     specialChar = "!@#$%^&*()_-+=/"
     special = False
@@ -111,7 +111,7 @@ def login_post():
         if any(password[i] in word for word in specialChar):
             special = True
     if not upper or not lower or not special or (len(password) < 6):
-        return render_template('login.html', message="Incorrect Password")
+        return render_template('login.html', message="Email/Password format is incorrect")
 
     if user:
         session['logged_in'] = user.email
@@ -136,7 +136,6 @@ def login_post():
 def logout():
     if 'logged_in' in session:
         session.pop('logged_in', None)
-        logout_user()
         
     return redirect('/')
 
