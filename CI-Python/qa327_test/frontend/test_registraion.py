@@ -100,7 +100,6 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Incorrect Password", "#message")
 
-
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_has_logged_in(self, *_):  # R2.1 R2.2 [GET]
@@ -132,6 +131,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/register')
         # make sure proper page and message is showing
         self.assert_element("#message")
+        self.assert_text("Register", "#message")
 
     @patch('qa327.backend.register_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -142,8 +142,18 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/logout')
         # open register page
         self.open(base_url + '/register')
-        # validate that proper page and message are showing (Just '' for register page)
+        # validate that proper page and message are showing and can enter in the following:
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name",'name register')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # assert register message element is showing
         self.assert_element("#message")
+        self.assert_text("Register", "#message")
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -212,8 +222,7 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # validate error message is shown for empty name
         self.assert_element("#message")
-        self.assert_text("Register", "#message")
-        # self.assert_text("Name length formatting error", "#message")
+        self.assert_text("Name length formatting error", "#message")
         # assert message still says register
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
@@ -259,7 +268,6 @@ class FrontEndHomePageTest(BaseCase):
         # validate error message is shown for spacing error in name
         self.assert_element("#message")
         self.assert_text("Spacing error in name", "#message")
-
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
