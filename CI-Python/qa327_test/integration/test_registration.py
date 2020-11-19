@@ -25,11 +25,3 @@ class Registered(BaseCase):
         self.type("#email", "testemail@gmail.com")
         self.type("#password", "Test0@")
         self.click('input[type="submit"]')
-
-    # def test_register_login(self):
-    #     """ This test checks the implemented login/logout feature """
-    #     self.register()
-    #     self.login()
-    #     self.open(base_url)
-    #     self.assert_element("#welcome-header")
-    #     self.assert_text("Welcome test0", "#welcome-header")
