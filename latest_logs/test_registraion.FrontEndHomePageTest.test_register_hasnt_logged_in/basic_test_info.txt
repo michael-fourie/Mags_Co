@@ -1,0 +1,24 @@
+test_registraion.FrontEndHomePageTest.test_register_hasnt_logged_in
+----------------------------------------------------
+Last Page: http://localhost:8081/register
+  Browser: chrome
+Timestamp: 1605747573  (Unix Timestamp)
+     Date: Wednesday, November 18, 2020
+     Time: 5:59:33 PM  (MDT, UTC-07:00)
+----------------------------------------------------
+Traceback: File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/unittest/case.py", line 615, in run
+    testMethod()
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/unittest/mock.py", line 1191, in patched
+    return func(*args, **keywargs)
+  File "/Users/annawood/Documents/GitHub/Mags_Co/CI-Python/qa327_test/frontend/test_registraion.py", line 135, in test_register_hasnt_logged_in
+    self.assert_element("#message")
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/base_case.py", line 5038, in assert_element
+    self.wait_for_element_visible(selector, by=by, timeout=timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/base_case.py", line 3381, in wait_for_element_visible
+    self.driver, selector, by, timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/page_actions.py", line 304, in wait_for_element_visible
+    timeout_exception(ElementNotVisibleException, message)
+  File "/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/seleniumbase/fixtures/page_actions.py", line 117, in timeout_exception
+    raise exc(message)
+Exception: Message: 
+ Element {#message} was not visible after 6 seconds!

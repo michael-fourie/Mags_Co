@@ -14,7 +14,7 @@ The html templates are stored in the 'templates' folder.
 @app.route('/register', methods=['GET'])
 def register_get():
     # templates are stored in the templates folder
-    return render_template('register.html', message='')
+    return render_template('register.html', message='Register')
 
 
 @app.route('/register', methods=['POST'])
@@ -55,11 +55,16 @@ def register_post():
         if not upper or not lower or not special:
             error_message = "Password is not strong enough"
 
-    elif len(name) <= 2 or len(name) >= 20:  # name is less than 2 characters or longer than 20 characters
+    elif len(name) <= 2:  # name is less than 2 characters or longer than 20 characters
         error_message = "Name length formatting error"
 
-    elif not name.isalnum():  # name is not alpha-numeric
-        error_message = "Name is not alpha numeric"
+    elif len(name) >= 20:
+        error_message = "Name length formatting error"
+
+    elif len(name) > 0:  # name is not alpha-numeric
+        for char in name:
+            if (not char.isalnum()) and (not char.isspace()):
+                error_message = "Name contains special characters"
 
     elif name[0] == " " or name[-1] == " ":  # spaces are in the first or last index of string
         error_message = "Spacing error in name"
@@ -98,7 +103,7 @@ def login_post():
 
     regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     if not re.search(regex, email):
-        return render_template('login.html', message="Email format is incorrect")
+        return render_template('login.html', message="Email/Password format is incorrect")
 
     specialChar = "!@#$%^&*()_-+=/"
     special = False
@@ -112,7 +117,7 @@ def login_post():
         if any(password[i] in word for word in specialChar):
             special = True
     if not upper or not lower or not special or (len(password) < 6):
-        return render_template('login.html', message="Incorrect Password")
+        return render_template('login.html', message="Email/Password format is incorrect")
 
     if user:
         session['logged_in'] = user.email
@@ -137,7 +142,6 @@ def login_post():
 def logout():
     if 'logged_in' in session:
         session.pop('logged_in', None)
-        logout_user()
         
     return redirect('/')
 

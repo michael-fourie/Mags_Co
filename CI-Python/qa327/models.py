@@ -24,7 +24,7 @@ class User(db.Model):
 
     # added attributes:
     # do not include primary key because balance does not have to be unique
-   # balance = db.Column(db.Integer)
+    balance = db.Column(db.Integer)
 
 class Form(db.Model):
     """
@@ -52,13 +52,24 @@ class Ticket(db.Model):
     name = db.Column(db.String(1000))               # name of ticket
     quantity = db.Column(db.Integer)                # quantity of this ticket
     price = db.Column(db.Integer)                   # price of ticket of this type
-    date = db.Column(db.String(50))                 # date of ticket use
+    date = db.Column(db.String(50))                 # expiration date
 
     instances = []
 
     def __init__self(self):
         self.instances.append(self)  # allows this class to be in the form of an iterable
                                     # list of objects of type Ticket
+
+class Form(db.Model):
+    """
+    A form model which hold form information
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)  # owner of ticket
+    name = db.Column(db.String(1000))               # name of ticket
+    quantity = db.Column(db.Integer)                # quantity of this ticket
+    price = db.Column(db.Integer)                   # price of ticket of this type
+    date = db.Column(db.String(50))                 # expiration date
 
 
 # it creates all the SQL tables if they do not exist
