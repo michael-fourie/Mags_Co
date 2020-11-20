@@ -88,6 +88,7 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     user = bn.login_user(email, password)
+    print(user)
     """
     Validation for email/password. We must check for blank email or password, 
     invalid password, and invalid email
