@@ -79,10 +79,15 @@ def register_ticket(owner, name, quantity, price, date):
     :param date: the date for ticket use
     :return: an error message if there is any, or None if action succeeds."""
 
-    new_ticket = Ticket(owner=owner, name=name, quantit=quantity, price=price, date=date)
+    new_ticket = Ticket(owner=owner, name=name, quantity=quantity, price=price, date=date)
 
     db.session.add(new_ticket)
     db.session.commit()
 
     return None
+"""
+def get_buy_form(name,quantity):
+    buy_form = Form(name=name,quantity=quantity)
 
+    return buy_form
+"""
