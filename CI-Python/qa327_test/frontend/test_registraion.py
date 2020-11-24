@@ -223,12 +223,12 @@ class FrontEndHomePageTest(BaseCase):
         # enter password1 into element
         self.type("#password", 'Name_register@1')
         # enter password 2 into element
-        self.type("#password2", 'Name_register@1')                      # F
+        self.type("#password2", 'Name_register@1')
         # click enter button
         self.click('input[type="submit"]')
         # validate error message is shown for empty name
         self.assert_element("#message")
-        self.assert_text("Name length formatting error", "#message")
+        self.assert_text("Register", "#message")
         # assert message still says register
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
@@ -605,6 +605,12 @@ class FrontEndHomePageTest(BaseCase):
     def test_logged_in_redirect(self, *_):
         """If the user has logged in, redirect to the user profile page"""
         """R1.3"""
+        self.open(base_url + '/login')
+        self.open(base_url + '/login')
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@")
+        # click enter button
+        self.click('input[type="submit"]')
         # open home page
         self.open(base_url)
         # test if the page loads correctly

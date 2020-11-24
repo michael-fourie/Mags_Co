@@ -58,13 +58,14 @@ instance of test_tickets in test_registration for the frontend. Then used all of
 above to verify in test case test_login_success
 - R3.6: created test case test_form_sell and linked with id tags in index.html
 - R3.7: created test case test_form_buy and linked with id tags in index.html
-- Created test cases for all R3.8-R3.10 and R7.1 and R8.1 to validate code and
+- R3.8: created test case test_form_update and linked with id tags in index.html
+- Created test cases for all R3.9-R3.11 and R7.1 and R8.1 to validate code and
  check for failures
-- R3.8: created test case test_ticket_sell_form and added id tags in index.html to
+- R3.9: created test case test_ticket_sell_form and added id tags in index.html to
 differentiate submit buttons, added action to form_sell
-- R3.9: created test case test_ticket_buy_form and added id tags in index.html to
+- R3.10: created test case test_ticket_buy_form and added id tags in index.html to
 differentiate submit buttons, added action to form_buy
-- R3.10: created test case test_ticket_update_form and added if tags in index.html
+- R3.11: created test case test_ticket_update_form and added if tags in index.html
 
 ## R7: For this set of specifications, the following changes were made:
 - R7.1: created test case test_logout
