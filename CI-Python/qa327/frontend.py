@@ -23,53 +23,73 @@ def register_post():
     name = request.form.get('name')
     password = request.form.get('password')
     password2 = request.form.get('password2')
-    error_message = None
+    error_message = ""
 
     # for validation:
-    regex = '^[a-z0-9]+[\._]?[a-z0-9]\w+{2,3}$'
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     specialCharacters = "!@#$%^&*+=~`-_/"
 
+    #The passwords do not match
     if password != password2:
+        print("pass no mathc")
         error_message = "The passwords do not match"
 
-    elif len(email) < 1:
+    #The email too short
+    if len(email) < 1:
+        print("short email")
         error_message = "Email format error"
 
-    elif not re.search(regex, email):  # email must be in RFC5322 format
+    #The email format is wrong
+    if not re.search(regex, email):  # email must be in RFC5322 format
+        print("invalid email")
         error_message = "Email not in RFC5322 format"
 
-    elif len(password) < 6:  # changed to < 6 to satisfy length requirement
+    #Password to short
+    if len(password) < 6:  # changed to < 6 to satisfy length requirement
+        print("pass to short")
         error_message = "Password not long enough"
 
-    elif len(password > 5):  # check to make password is complex enough
+    #Password not valid
+    if len(password) > 5:  # check to make password is complex enough
+        print("check valid pass")
         upper = False
         lower = False
         special = False
-        for char in password:
-            if char.isupper():
+        for char in range(len(password)):
+            if password[char].isupper():
                 upper = True
-            elif char.islower():
+            if password[char].islower():
                 lower = True
-            elif any(char in specialChar for specialChar in specialCharacters):
+            if any(password[char] in word for word in specialCharacters):
                 special = True
-        if not upper or not lower or not special:
+        if not upper and not lower and not special:
             error_message = "Password is not strong enough"
 
-    elif len(name) <= 2:  # name is less than 2 characters or longer than 20 characters
+    #Name is too short
+    if len(name) <= 2:  # name is less than 2 characters or longer than 20 characters
+        print("name to short")
         error_message = "Name length formatting error"
 
-    elif len(name) >= 20:
+    #Name is too long
+    if len(name) >= 20:
+        print("name to long")
         error_message = "Name length formatting error"
 
-    elif len(name) > 0:  # name is not alpha-numeric
-        for char in name:
-            if (not char.isalnum()) and (not char.isspace()):
+    #Name has special char
+    if len(name) > 0:  # name is not alpha-numeric
+        print("name spec char")
+        for char in range(len(name)):
+            if (not name[char].isalnum()) or (name[char].isspace()):
                 error_message = "Name contains special characters"
 
-    elif name[0] == " " or name[-1] == " ":  # spaces are in the first or last index of string
+
+    #Space error
+    if name[0] == " " or name[-1] == " ":  # spaces are in the first or last index of string
+        print("space err")
         error_message = "Spacing error in name"
 
-    else:
+    #No error message, so no issue with validity of credentials
+    if error_message == "":
         user = bn.get_user(email)
         if user:
             error_message = "This email has already been used"  # changed error message to satisfy requirement
@@ -77,9 +97,13 @@ def register_post():
             error_message = "Failed to store user info."
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
-    if error_message:
+
+
+    if error_message != "":
+        print("if error messg")
         return render_template('register.html', message=error_message)
     else:
+        print("redirect")
         return redirect('/login')
 
 
@@ -133,7 +157,7 @@ def login_post():
         """
         # success! go back to the home page
         # code 303 is to force a 'GET' request
-        return redirect(url_for(profile), code=303)
+        return redirect('/', code=303)
     else:
         return render_template('login.html', message='login failed')
 
