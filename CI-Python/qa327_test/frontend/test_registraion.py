@@ -5,6 +5,7 @@ from qa327_test.conftest import base_url
 from unittest.mock import patch
 from qa327.models import db, User, Form
 from werkzeug.security import generate_password_hash, check_password_hash
+import requests
 
 """
 This file defines all unit tests for the frontend homepage.
@@ -472,6 +473,93 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#quantity_buy")
 
     @patch('qa327.backend.get_user', return_value=test_user)
+    def test_form_update(self, *_):  # R3.8 [GET]
+        """Validate update form and fields name, quantity, price, exp date exist"""
+        # Open the logout page to invalidate any logged-in session
+        self.open(base_url + '/logout')
+        # open the login page
+        self.open(base_url + '/login')
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@")
+        # click enter button
+        self.click('input[type="submit"]')
+        # open home page
+        self.open(base_url)
+        self.assert_element("#name_update")
+        self.assert_element("#quantity_update")
+        self.assert_element("#price_update")
+        self.assert_element("#exp_date_update")
+
+    # Validate that the ticket-update form can be posted to /update
+    # test case R3.10
+    @patch('qa327.backend.get_user', return_value=test_user)
+    def test_ticket_update_form(self, *_):
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open login page
+        self.open(base_url + '/login')
+        # fill email and password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@")
+        # click enter button
+        self.click('input[type="submit"]')
+        #Open back up proflile page
+        self.open(base_url)
+        self.click('input[type="submit"]')
+        self.open(base_url + '/update')
+
+    # Validate that the ticket-selling form can be posted to /sell
+    # test case for R3.8
+    @patch('qa327.backend.get_user', return_value=test_user)
+    def test_ticket_sell_form(self, *_):
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open login page
+        self.open(base_url + '/login')
+        # fill email and password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@")
+        # click enter button
+        self.click('input[type="submit"]')
+
+        self.open(base_url)
+        # fills out sell form
+        self.type('#name_sell', 'new_sell_ticket')
+        self.type('#quantity_sell', '10')
+        self.type('#price_sell', '10')
+        self.type('#exp_date_sell', '20201031')
+
+        # submits sell form
+        self.click('input[id="submit-sell"]')
+
+        self.open(base_url)
+        # verifies form_sell was POSTed to /
+        self.assert_element("#form_sell")
+
+    # Validate that the ticket-buying form can be posted to /buy
+    # test case R3.9
+    @patch('qa327.backend.get_user', return_value=test_user)
+    def test_ticket_buy_form(self, *_):
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open login page
+        self.open(base_url + '/login')
+        # fill email and password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@")
+        # click enter button
+        self.click('input[type="submit"]')
+        self.open(base_url)
+        # fills out buy form
+        self.type('#name_buy', 'new_ticket')
+        self.type('#quantity_buy', '10')
+        self.click('input[id="submit-buy"]')
+        self.open(base_url)
+        # returns true if form_buy was POSTed
+        self.assert_element('#form_buy')
+
+
+    @patch('qa327.backend.get_user', return_value=test_user)
     def test_not_loggedin(self, *_):
         """If the user hasnt logged in, show the login page"""
         """R1.1"""
@@ -648,4 +736,22 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Email/Password format is incorrect", "#message")
 
+    # Ensure that the login page is showing after the user submits logout. Ensure that none of
+    # the pages can be accessed if user tries to type in their address.
+    # test case R7.1
+    @patch('qa327.backend.get_user', return_value=test_user)
+    def test_logout(self, *_):
+        self.open(base_url + '/logout')
+        self.open(base_url + '/')
+        # returns true if correct message is displayed
+        self.assert_element('#message')
 
+    # Check that when anything after the backslash that has not been defined (/*) returns a 404 error code.
+    # test case R8.1
+    def test_unexpected_input(self):
+        self.open(base_url + '/*')
+        self.open(base_url)
+        #retrieves status code of action
+        r = requests.get(base_url + '/*')
+        #returns true if correct error message is displayed (404 not found)
+        assert (r.status_code == 404)
