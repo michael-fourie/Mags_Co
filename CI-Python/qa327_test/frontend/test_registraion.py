@@ -4,6 +4,7 @@ from seleniumbase import BaseCase
 from qa327_test.conftest import base_url
 from unittest.mock import patch
 from qa327.models import db, User, Form
+
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests
 
@@ -51,6 +52,7 @@ test_sell_form = Form(
     price='50',
     date='02/23/2020'
 )
+
 
 
 class FrontEndHomePageTest(BaseCase):
@@ -103,7 +105,6 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Email/Password format is incorrect", "#message")
 
-
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_has_logged_in(self, *_):  # R2.1 R2.2 [GET]
@@ -128,6 +129,7 @@ class FrontEndHomePageTest(BaseCase):
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_hasnt_logged_in(self, *_):
         '''If the user hasn't logged in, show the user registration page'''
+        # R2.2
         # Open the logout page to invalidate any logged-in session
         # log out any previous users
         self.open(base_url + '/logout')
@@ -135,6 +137,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/register')
         # make sure proper page and message is showing
         self.assert_element("#message")
+        self.assert_text("Register", "#message")
 
     @patch('qa327.backend.register_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -145,8 +148,18 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/logout')
         # open register page
         self.open(base_url + '/register')
-        # validate that proper page and message are showing (Just '' for register page)
+        # validate that proper page and message are showing and can enter in the following:
+        # enter email into element
+        self.type("#email", "new_frontend@test.com")
+        # enter name into element
+        self.type("#name",'name register')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # assert register message element is showing
         self.assert_element("#message")
+        self.assert_text("Register", "#message")
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -210,13 +223,12 @@ class FrontEndHomePageTest(BaseCase):
         # enter password1 into element
         self.type("#password", 'Name_register@1')
         # enter password 2 into element
-        self.type("#password2", 'Name_register@1')                      #"""IMPORTANT FAIL"""
+        self.type("#password2", 'Name_register@1')                      # F
         # click enter button
         self.click('input[type="submit"]')
         # validate error message is shown for empty name
         self.assert_element("#message")
-        self.assert_text("Register", "#message")
-        # self.assert_text("Name length formatting error", "#message")
+        self.assert_text("Name length formatting error", "#message")
         # assert message still says register
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
@@ -228,9 +240,9 @@ class FrontEndHomePageTest(BaseCase):
         # open register page
         self.open(base_url + '/register')
         # enter email into element
-        self.type("#email", "register@test.ca")             #IMPORTANT FAIL
-        # enter name into element                                  SAME AS ABOVE GOES TO ERROR PAGE
-        self.type("#name", '$invalid_name$')                        # changed elif condition to len name > 0
+        self.type("#email", "register@test.ca")             
+        # enter name into element                                  
+        self.type("#name", '$invalid_name$')                        
         # enter password1 into element
         self.type("#password", 'Name_register@1')
         # enter password 2 into element
@@ -250,8 +262,8 @@ class FrontEndHomePageTest(BaseCase):
         # open register page
         self.open(base_url + '/register')
         # enter email into element
-        self.type("#email", "new_frontend@test.com")                    #IMPORTANT FAIL
-        # enter name into element                                       SAME AS ABOVE GOES TO ERROR PAGE
+        self.type("#email", "new_frontend@test.com")                    
+        # enter name into element                                       
         self.type("#name", 'nameregister ')
         # enter password1 into element
         self.type("#password", 'Name_register@1')
@@ -263,7 +275,6 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Spacing error in name", "#message")
 
-
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_name_short(self, *_):  # R2.8A and R2.9 [POST]
@@ -271,8 +282,8 @@ class FrontEndHomePageTest(BaseCase):
         # log out any previous users
         self.open(base_url + '/logout')
         # open register page
-        self.open(base_url + '/register')                             #IMPORTANT FAIL
-        # enter email into element                                   SAME AS ABOVE GOES TO ERROR PAGE
+        self.open(base_url + '/register')                               
+        # enter email into element
         self.type("#email", "new_frontend@test.com")
         # enter name into element
         self.type("#name", 'na')
@@ -291,8 +302,8 @@ class FrontEndHomePageTest(BaseCase):
     def test_register_name_long(self, *_):  # R2.8B and R2.9 [POST]
         '''User name has to be less than 20 characters'''
         # log out any previous users
-        self.open(base_url + '/logout')             #IMPORTANT FAIL
-        # open register page                        SAME AS ABOVE GOES TO ERROR PAGE
+        self.open(base_url + '/logout')                                 
+        # open register page
         self.open(base_url + '/register')
         # enter email into element
         self.type("#email", "new_frontend@test.com")
@@ -315,9 +326,9 @@ class FrontEndHomePageTest(BaseCase):
         '''For any formatting errors, redirect back to /login and show message '{}
         format is incorrect.'.format(the_corresponding_attribute)'''
         # log out any previous users
-        self.open(base_url + '/logout')             # IMPORTANT FAIL
-        # open register page                        SAME AS ABOVE GOES TO ERROR PAGE
-        self.open(base_url + '/register')           # Internal server error
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')                               
         # enter email into element
         self.type("#email", "register@test.ca")
         # enter name into element
@@ -344,9 +355,9 @@ class FrontEndHomePageTest(BaseCase):
         # enter email into element
         self.type("#email", "register@test.ca")  # email is same as test_user_register
         # enter name into element
-        self.type("#name", 'nameregister')                     # IMPORTANT FAIL
-        # enter password1 into element                          SAME AS ABOVE GOES TO ERROR PAGE
-        self.type("#password", 'Name_register@1')               # Internal server error STILLL FAILED
+        self.type("#name", 'nameregister')                    
+        # enter password1 into element                          
+        self.type("#password", 'Name_register@1')              
         # enter password 2 into element
         self.type("#password2", 'Name_register@1')
         # click enter button
@@ -372,7 +383,7 @@ class FrontEndHomePageTest(BaseCase):
         # enter password1 into element
         self.type("#password", 'Name_register@1')
         # enter password 2 into element
-        self.type("#password2", 'Name_register@1')
+        self.type("#password2", 'Name_register@1')                    
         # click enter button
         self.click('input[type="submit"]')
         # validate user profile creation is successful
@@ -390,6 +401,7 @@ class FrontEndHomePageTest(BaseCase):
         """Validate that this page shows a header ‘Hi {}’.format(user.name)"""
         """R3.2"""
         # Open the logout page to invalidate any logged-in session
+        # R3.2
         self.open(base_url + '/logout')
         # open the login page
         self.open(base_url + '/login')
@@ -408,6 +420,7 @@ class FrontEndHomePageTest(BaseCase):
         """Validate that this page shows user balance"""
         """R3.3"""
         # Open the logout page to invalidate any logged-in session
+        # R3.3
         self.open(base_url + '/logout')
         # open the login page
         self.open(base_url + '/login')
@@ -425,6 +438,7 @@ class FrontEndHomePageTest(BaseCase):
         """Validate that there is a logout link"""
         """R3.4"""
         # Open the logout page to invalidate any logged-in session
+        # R3.4
         self.open(base_url + '/logout')
         # open the login page
         self.open(base_url + '/login')
@@ -441,6 +455,7 @@ class FrontEndHomePageTest(BaseCase):
         """Validate sell form and fields name, quantity, price, exp date exist"""
         """R3.6"""
         # Open the logout page to invalidate any logged-in session
+        # R3.6
         self.open(base_url + '/logout')
         # open the login page
         self.open(base_url + '/login')
@@ -460,6 +475,7 @@ class FrontEndHomePageTest(BaseCase):
         """Validate buy form and fields name, quantity exist"""
         """R3.7"""
         # Open the logout page to invalidate any logged-in session
+        # R3.7
         self.open(base_url + '/logout')
         # open the login page
         self.open(base_url + '/login')
@@ -491,7 +507,7 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#exp_date_update")
 
     # Validate that the ticket-update form can be posted to /update
-    # test case R3.10
+    # test case R3.11
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_ticket_update_form(self, *_):
         # log out any previous users
@@ -509,7 +525,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/update')
 
     # Validate that the ticket-selling form can be posted to /sell
-    # test case for R3.8
+    # test case for R3.9
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_ticket_sell_form(self, *_):
         # log out any previous users
@@ -537,7 +553,7 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#form_sell")
 
     # Validate that the ticket-buying form can be posted to /buy
-    # test case R3.9
+    # test case R3.10
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_ticket_buy_form(self, *_):
         # log out any previous users
@@ -571,6 +587,7 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Please login", "#message")
 
+        
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_login_message(self, *_):
         """The login page has that by deafult says 'please login"""
@@ -588,13 +605,6 @@ class FrontEndHomePageTest(BaseCase):
     def test_logged_in_redirect(self, *_):
         """If the user has logged in, redirect to the user profile page"""
         """R1.3"""
-        # open login page
-        self.open(base_url + '/login')
-        # fill email and password
-        self.type("#email", "test_frontend@test.com")
-        self.type("#password", "Test_frontend@")
-        # click enter button
-        self.click('input[type="submit"]')
         # open home page
         self.open(base_url)
         # test if the page loads correctly
@@ -718,7 +728,8 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#welcome-header")
         self.assert_text("Hi test_frontend", "#welcome-header")
         self.assert_element("#tickets div h4")
-        self.assert_text("t1 100", "#tickets div h4")
+        self.assert_text("t1 100", "#tickets div h4") 
+        
 
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_email_password_incorrect(self, *_):
