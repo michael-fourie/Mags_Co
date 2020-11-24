@@ -38,7 +38,7 @@ class BackEndUserTest(BaseCase):
         self.type("#password", "Test_frontend@")
         self.click('input[type="submit"]')
         self.open(base_url)
-        self.assert_text("Welcome test_frontend", "#welcome-header")
+        self.assert_text("Hi test_frontend", "#welcome-header")
 
         # Enter an invalid email. and a valid password. Should not let the user login since the login_user()
         # function should return a None type object
