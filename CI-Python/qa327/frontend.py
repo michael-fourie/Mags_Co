@@ -223,14 +223,52 @@ def error():
 @app.route('/buy')
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def buy_ticket(user):
-    # This function will display the buy ticker page to the user
+    # This function will display the buy ticket page to the user
     # We need the user information and the ticker information
     # This will then display the buy.html page
-    ticket = bn.get_all_tickets()
-    return render_template('buy.html', user=user, ticket=ticket)
+
+    #Need code for user entering which ticket tehy watn to buy
+
+    ticket_name = request.form.get('name')
+    ticket_quantity = request.form.get('quantity')
+
+    error_message = ""
+
+    # There must not be a space at beggining or end, and the name mus tbe alphanumeric
+    if (ticket_name[0] == " " or ticket_name[-1] == " " or not ticket_name.isalnum()):
+        error_message = "Invalid ticket name"
+
+    # Ticket name must be shroter than 60 characters
+    if (len(ticket_name) > 60):
+        error_message = "Ticket name too long"
+
+    # Ticket quantity must be greater than 0 and less than or equal to 100
+    if (ticket_quantity <= 0 or ticket_quantity > 100):
+        error_message = "Invalid amount of tickets"
+
+    if error_message != "":
+        return render_template('buy.html', message=error_message)
+
+    ticket = bn.get_tickets(ticket_name)
+
+    if ticket.price < 10 or ticket.price > 100:
+        error_message = "Invalid ticket price"
+
+    #Ticket date must be in valid format YYYYMMDD
+    #Assumption: ticket dates will start from today (2020-11-26) and go onwards
+    if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
+    int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
+        error_message = "Invalid ticket data"
+
+    if error_message != "":
+        return redirect('/', message=error_message)
+    else:
+        #Add the ticket to the user's list of tickets.
+        bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
+        return render_template('buy.html', user=user, ticket=ticket)
 
 
-@app.route('/sell')
+@app.route('/sell', methods=['POST'])
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def sell_ticket(user):
     # This function will display the buy ticker page to the user
