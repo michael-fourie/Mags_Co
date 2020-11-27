@@ -266,9 +266,9 @@ def sell_ticket(user):
     if error_message != "":
         return redirect('/', message=error_message)
     else:  # add ticket to user's profile
-        error_message = ""     # NEED TO CREATE A TICKET ARRAY IN USER MODEL NOT STRING
-
-
-    ticket = bn.get_all_tickets()
-    return render_template('sell.html', user=user, ticket=ticket)
+        user.tickets.append(ticket)  # NEED TO CREATE A TICKET ARRAY IN USER MODEL NOT STRING
+        # Check if this works
+        ticket = bn.get_all_tickets() # get all tickets and display sell.html (?)
+        # Now shows updated tickets for user and redirects to sell page
+        return render_template('sell.html', user=user, ticket=ticket)
 
