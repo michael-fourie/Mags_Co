@@ -24,13 +24,13 @@
 <div>
   <h4>Sell Ticket</h4>
   <form method="POST" id="form_sell" action="localhost:8081/sell">
-    <label for="name">Name:</label>
+    <label for="name_sell">Name:</label>
     <input type="text" id="name_sell" name="name"><br><br>
-    <label for="quantity">Quantity:</label>
+    <label for="quantity_sell">Quantity:</label>
     <input type="text" id="quantity_sell" name="quantity"><br><br>
-    <label for="price">Price:</label>
+    <label for="price_sell">Price:</label>
     <input type="text" id="price_sell" name="price"><br><br>
-    <label for="exp_date">Expiration date:</label>
+    <label for="exp_date_sell">Expiration date:</label>
     <input type="text" id="exp_date_sell" name="exp_date"><br><br>
     <input id="submit-sell" type="submit" value="Submit">
   </form>
@@ -38,23 +38,23 @@
   <br>
   <h4>Buy Ticket</h4>
   <form method="POST" id="form_buy" action="localhost:8081/buy">
-    <label for="name">Name:</label>
+    <label for="name_buy">Name:</label>
     <input type="text" id="name_buy" name="name"><br><br>
-    <label for="quantity">Quantity:</label>
+    <label for="quantity_buy">Quantity:</label>
     <input type="text" id="quantity_buy" name="quantity"><br><br>
     <input id="submit-buy" type="submit" value="Submit">
   </form>
 
   <br>
   <h4>Update Ticket</h4>
-  <form method="POST" id="form_update">
-    <label for="name">Name:</label>
+  <form method="POST" id="form_update" action="localhost:8081/update">
+    <label for="name_update">Name:</label>
     <input type="text" id="name_update" name="name"><br><br>
-    <label for="quantity">Quantity:</label>
+    <label for="quantity_update">Quantity:</label>
     <input type="text" id="quantity_update" name="quantity"><br><br>
-    <label for="price">Price:</label>
+    <label for="price_update">Price:</label>
     <input type="text" id="price_update" name="price"><br><br>
-    <label for="exp_date">Expiration date:</label>
+    <label for="exp_date_update">Expiration date:</label>
     <input type="text" id="exp_date_update" name="exp_date"><br><br>
     <input id="submit-update" type="submit" value="Submit">
   </form>

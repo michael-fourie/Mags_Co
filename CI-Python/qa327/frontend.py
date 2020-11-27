@@ -31,7 +31,7 @@ def register_post():
 
     #The passwords do not match
     if password != password2:
-        print("pass no mathc")
+        print("password no match")
         error_message = "The passwords do not match"
 
     #The email too short
@@ -238,4 +238,6 @@ def sell_ticket(user):
     # This will then display the sell.html page
     ticket = bn.get_all_tickets()
     return render_template('sell.html', user=user, ticket=ticket)
+
+def update()
 
