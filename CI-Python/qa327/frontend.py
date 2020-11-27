@@ -215,7 +215,6 @@ def profile(user):
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
 
-
 @app.route('/*')
 def error():
     return redirect('/', code=404)
@@ -230,12 +229,46 @@ def buy_ticket(user):
     return render_template('buy.html', user=user, ticket=ticket)
 
 
-@app.route('/sell')
+@app.route('/sell') # THIS APP ROUTE MAY NEED TO BE INDEX APP ROUTE
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def sell_ticket(user):
+    '''THIS IS ACTUALLY CODE FOR BUY_TICKET'''
     # This function will display the buy ticker page to the user
     # We need the user information and the ticker information
     # This will then display the sell.html page
+    name = request.form.get('name')
+    quantity = request.form.get('quantity')
+    error_message = ""
+
+    # ticket contains invalid spaces, or ticket is not alphanumeric
+    if name[0] == " " or name[-1] == " " or not ticket_name.isalnum():
+        error_message = "Invalid ticket name"
+
+    # ticket name is longer than 60 chars
+    if len(name) > 60:
+        error_message = "Ticket name too long"
+
+    # ticket quantity has to be greater than zero and less than 100
+    if ticket_quantity <= 0 or ticket_quantity > 100:
+        error_message = "Invalid amount of tickets"
+
+    ticket = bn.get_ticket(name)   # have a try catch error here?
+
+    # ticket quantity has to be more than quantity requested to buy
+    if quantity > ticket.quantity:
+        error_messsage = "Requested quantity larger than available tickets"
+
+    # user has to have more balance than ticket price + xtra fees
+    if user.balance < (ticket.price * quantity * 1.35 * 1.05):
+        error_message = "User balance not enough for purchase"
+
+    # redirect and display error message if possible
+    if error_message != "":
+        return redirect('/', message=error_message)
+    else:  # add ticket to user's profile
+        error_message = ""     # NEED TO CREATE A TICKET ARRAY IN USER MODEL NOT STRING
+
+
     ticket = bn.get_all_tickets()
     return render_template('sell.html', user=user, ticket=ticket)
 
