@@ -239,5 +239,5 @@ def sell_ticket(user):
     ticket = bn.get_all_tickets()
     return render_template('sell.html', user=user, ticket=ticket)
 
-def update()
+#def update()
 
