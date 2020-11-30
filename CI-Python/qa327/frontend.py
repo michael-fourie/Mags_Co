@@ -241,7 +241,7 @@ def sell_ticket(user):
     error_message = ""
 
     # ticket contains invalid spaces, or ticket is not alphanumeric
-    if name[0] == " " or name[-1] == " " or not ticket_name.isalnum():
+    if name[0] == " " or name[-1] == " " or not name.isalnum():
         error_message = "Invalid ticket name"
 
     # ticket name is longer than 60 chars
@@ -249,7 +249,7 @@ def sell_ticket(user):
         error_message = "Ticket name too long"
 
     # ticket quantity has to be greater than zero and less than 100
-    if ticket_quantity <= 0 or ticket_quantity > 100:
+    if quantity <= 0 or quantity > 100:
         error_message = "Invalid amount of tickets"
 
     ticket = bn.get_ticket(name)   # have a try catch error here?
