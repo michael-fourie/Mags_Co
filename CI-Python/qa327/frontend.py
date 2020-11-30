@@ -239,3 +239,53 @@ def sell_ticket(user):
     ticket = bn.get_all_tickets()
     return render_template('sell.html', user=user, ticket=ticket)
 
+
+@app.route('/update')
+# @authenticate  # (??) not sure if we need this here to authenticate user
+def update_ticket(user):
+    # This function will display the update ticket page to the user
+    # We need the user information and the ticket information
+    # This will then display the update.html page
+
+    ticket_name = request.form.get('name')  # using name but should id be used instead?
+    ticket_quantity = request.form.get('quantity')
+
+    error_message = ""
+
+    # There must not be a space at beginning or end
+    if ticket_name[0] == " " or ticket_name[-1] == " " or not ticket_name.isalnum():
+        error_message = "Invalid ticket name"
+
+    # the name must be alphanumeric
+    if len(ticket_name) > 0:  # name is not alpha-numeric
+        for char in range(len(ticket_name)):
+            if not ticket_name[char].isalnum():
+                error_message = "Name contains special characters"
+
+    # the name of the ticket is no longer than 60 characters
+    if len(ticket_name) > 60:
+        error_message = "Ticket name too long"
+
+    # the quantity of the tickets has to be more than 0, and less than or equal to 100
+    if ticket_quantity <= 0 or ticket_quantity > 100:
+        error_message = "Invalid amount of tickets"
+
+    ticket = bn.get_ticket(ticket_name)
+
+    # the ticket of the given name must exist
+    if ticket is None:
+        error_message = "Ticket does not exist"
+
+    # price has to be of range [10, 100]
+    if ticket.price < 10 or ticket.price > 100:
+        error_message = "Invalid ticket price"
+
+    # date must be given in format YYYYMMDD
+    if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
+            int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
+        error_message = "Invalid ticket data"
+
+
+    # for any errors, redirect back to / and show an error message
+    if error_message != "":
+        return redirect('/', message=error_message)
