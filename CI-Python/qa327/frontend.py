@@ -325,4 +325,4 @@ def update_ticket(user):
     # for any errors, redirect back to / and show an error message
     if error_message != "":
     
-    return redirect('/', message=error_message)
+        return redirect('/', message=error_message)
