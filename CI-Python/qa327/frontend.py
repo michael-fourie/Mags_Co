@@ -31,7 +31,7 @@ def register_post():
 
     #The passwords do not match
     if password != password2:
-        print("pass no mathc")
+        print("password no match")
         error_message = "The passwords do not match"
 
     #The email too short
@@ -280,6 +280,9 @@ def update_ticket(user):
     # We need the user information and the ticket information
     # This will then display the update.html page
 
+
+
+
     ticket_name = request.form.get('name')  # using name but should id be used instead?
     ticket_quantity = request.form.get('quantity')
 
@@ -321,4 +324,5 @@ def update_ticket(user):
 
     # for any errors, redirect back to / and show an error message
     if error_message != "":
+    
         return redirect('/', message=error_message)
