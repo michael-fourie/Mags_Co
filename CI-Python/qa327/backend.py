@@ -93,7 +93,6 @@ def get_buy_form(name,quantity):
     return buy_form
 """
 
-@app.route('/update', methods=['POST'])
 def get_update():
     name = request.form['name_update_changes']
     quantity = request.form['quantity_update_changes']
