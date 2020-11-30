@@ -282,7 +282,7 @@ def update_ticket(user):
 
 
 
-=======
+
     ticket_name = request.form.get('name')  # using name but should id be used instead?
     ticket_quantity = request.form.get('quantity')
 
