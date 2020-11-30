@@ -25,6 +25,8 @@ class User(db.Model):
     # added attributes:
     # do not include primary key because balance does not have to be unique
     balance = db.Column(db.Integer)
+    tickets = []
+
 
 class Form(db.Model):
     """
@@ -58,7 +60,7 @@ class Ticket(db.Model):
 
     def __init__self(self):
         self.instances.append(self)  # allows this class to be in the form of an iterable
-                                    # list of objects of type Ticket
+                                     # list of objects of type Ticket
 
 
 # it creates all the SQL tables if they do not exist
