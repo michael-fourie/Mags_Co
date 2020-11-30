@@ -1,5 +1,6 @@
 from qa327.models import db, User, Ticket
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import request, redirect
 
 """
 This file defines all backend logic that interacts with database and other services
@@ -91,3 +92,12 @@ def get_buy_form(name,quantity):
 
     return buy_form
 """
+
+@app.route('/update', methods=['POST'])
+def get_update():
+    name = request.form['name_update_changes']
+    quantity = request.form['quantity_update_changes']
+    price = ['price_update_changes']
+    exp_date = ['exp_date_update_changes']
+    updated_ticket = Ticket(name,quantity,price,exp_date)
+    return updated_ticket
