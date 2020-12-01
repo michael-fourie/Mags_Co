@@ -25,7 +25,9 @@ class User(db.Model):
     # added attributes:
     # do not include primary key because balance does not have to be unique
     balance = db.Column(db.Integer)
-    tickets = []
+    tickets = db.Column(db.String(100))
+
+
 
 
 class Form(db.Model):
