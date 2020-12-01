@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Update Ticket Information{% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+<h2 id="welcome-header">Welcome {{ user.name }} !</h2>
+
+
+<h2 >Please enter the ticket information that needs to be updated</h2>
+
+<h4>Update Ticket</h4>
+  <form method="POST" id="form_update">
+    <label for="name_update_changes">Name:</label>
+    <input type="text" id="name_update_changes" name="name"><br><br>
+    <label for="quantity_update_changes">Quantity:</label>
+    <input type="text" id="quantity_update_changes" name="quantity"><br><br>
+    <label for="price_update_changes">Price:</label>
+    <input type="text" id="price_update_changes" name="price"><br><br>
+    <label for="exp_date_update_changes">Expiration date:</label>
+    <input type="text" id="exp_date_update_changes" name="exp_date"><br><br>
+    <input id="submit-update-changes" type="submit" value="Submit">
+  </form>
+
+<a href="/">Home</a>
+
+<a href='/logout'>logout</a>
+
+{% endblock %}

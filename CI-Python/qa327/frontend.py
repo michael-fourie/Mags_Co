@@ -31,7 +31,7 @@ def register_post():
 
     #The passwords do not match
     if password != password2:
-        print("pass no mathc")
+        print("password no match")
         error_message = "The passwords do not match"
 
     #The email too short
@@ -215,7 +215,6 @@ def profile(user):
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
 
-
 @app.route('/*')
 def error():
     return redirect('/', code=404)
@@ -268,12 +267,101 @@ def buy_ticket(user):
         return render_template('buy.html', user=user, ticket=ticket)
 
 
+
 @app.route('/sell', methods=['POST'])
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def sell_ticket(user):
+    '''THIS IS ACTUALLY CODE FOR BUY_TICKET'''
     # This function will display the buy ticker page to the user
     # We need the user information and the ticker information
     # This will then display the sell.html page
-    ticket = bn.get_all_tickets()
-    return render_template('sell.html', user=user, ticket=ticket)
+    name = request.form.get('name')
+    quantity = request.form.get('quantity')
+    error_message = ""
 
+    # ticket contains invalid spaces, or ticket is not alphanumeric
+    if name[0] == " " or name[-1] == " " or not name.isalnum():
+        error_message = "Invalid ticket name"
+
+    # ticket name is longer than 60 chars
+    if len(name) > 60:
+        error_message = "Ticket name too long"
+
+    # ticket quantity has to be greater than zero and less than 100
+    if quantity <= 0 or quantity > 100:
+        error_message = "Invalid amount of tickets"
+
+    ticket = bn.get_ticket(name)   # have a try catch error here?
+
+    # ticket quantity has to be more than quantity requested to buy
+    if quantity > ticket.quantity:
+        error_messsage = "Requested quantity larger than available tickets"
+
+    # user has to have more balance than ticket price + xtra fees
+    if user.balance < (ticket.price * quantity * 1.35 * 1.05):
+        error_message = "User balance not enough for purchase"
+
+    # redirect and display error message if possible
+    if error_message != "":
+        return redirect('/', message=error_message)
+    else:  # add ticket to user's profile
+        user.tickets.append(ticket)  # NEED TO CREATE A TICKET ARRAY IN USER MODEL NOT STRING
+        # Check if this works
+        ticket = bn.get_all_tickets() # get all tickets and display sell.html (?)
+        # Now shows updated tickets for user and redirects to sell page
+        return render_template('sell.html', user=user, ticket=ticket)
+
+
+@app.route('/update')
+# @authenticate  # (??) not sure if we need this here to authenticate user
+def update_ticket(user):
+    # This function will display the update ticket page to the user
+    # We need the user information and the ticket information
+    # This will then display the update.html page
+
+
+
+
+    ticket_name = request.form.get('name')  # using name but should id be used instead?
+    ticket_quantity = request.form.get('quantity')
+
+    error_message = ""
+
+    # There must not be a space at beginning or end
+    if ticket_name[0] == " " or ticket_name[-1] == " " or not ticket_name.isalnum():
+        error_message = "Invalid ticket name"
+
+    # the name must be alphanumeric
+    if len(ticket_name) > 0:  # name is not alpha-numeric
+        for char in range(len(ticket_name)):
+            if not ticket_name[char].isalnum():
+                error_message = "Name contains special characters"
+
+    # the name of the ticket is no longer than 60 characters
+    if len(ticket_name) > 60:
+        error_message = "Ticket name too long"
+
+    # the quantity of the tickets has to be more than 0, and less than or equal to 100
+    if ticket_quantity <= 0 or ticket_quantity > 100:
+        error_message = "Invalid amount of tickets"
+
+    ticket = bn.get_ticket(ticket_name)
+
+    # the ticket of the given name must exist
+    if ticket is None:
+        error_message = "Ticket does not exist"
+
+    # price has to be of range [10, 100]
+    if ticket.price < 10 or ticket.price > 100:
+        error_message = "Invalid ticket price"
+
+    # date must be given in format YYYYMMDD
+    if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
+            int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
+        error_message = "Invalid ticket data"
+
+
+    # for any errors, redirect back to / and show an error message
+    if error_message != "":
+    
+        return redirect('/', message=error_message)

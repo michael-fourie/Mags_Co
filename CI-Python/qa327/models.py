@@ -27,6 +27,9 @@ class User(db.Model):
     balance = db.Column(db.Integer)
     tickets = db.Column(db.String(100))
 
+
+
+
 class Form(db.Model):
     """
     A form model which hold form information
@@ -59,7 +62,7 @@ class Ticket(db.Model):
 
     def __init__self(self):
         self.instances.append(self)  # allows this class to be in the form of an iterable
-                                    # list of objects of type Ticket
+                                     # list of objects of type Ticket
 
 
 # it creates all the SQL tables if they do not exist
