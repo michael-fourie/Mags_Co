@@ -219,9 +219,9 @@ def profile(user):
 def error():
     return redirect('/', code=404)
 
-@app.route('/buy')
+@app.route('/sell', methods=["POST"])
 # @authenticate  # (??) not sure if we need this here to authenticate user
-def buy_ticket(user):
+def sell_ticket(user):
     # This function will display the buy ticket page to the user
     # We need the user information and the ticker information
     # This will then display the buy.html page
@@ -268,9 +268,9 @@ def buy_ticket(user):
 
 
 
-@app.route('/sell', methods=['POST'])
+@app.route('/buy', methods=['POST'])
 # @authenticate  # (??) not sure if we need this here to authenticate user
-def sell_ticket(user):
+def buy_ticket(user):
     '''THIS IS ACTUALLY CODE FOR BUY_TICKET'''
     # This function will display the buy ticker page to the user
     # We need the user information and the ticker information
