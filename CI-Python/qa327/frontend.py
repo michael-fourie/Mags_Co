@@ -17,6 +17,69 @@ def register_get():
     return render_template('register.html', message='Register')
 
 
+''' This function is used to check if the password formatting is correct.
+Password needs to have at least: 1 uppercase char, 1 lowercase char,
+and special char (special chars defined below)
+Input: string variable password
+Output: string error message'''
+def check_special_pass(password):
+
+    specialChar = "!@#$%^&*()_-+=/"
+
+    special = False
+    upper = False
+    lower = False
+    for i in range(len(password)):
+        if password[i].isupper():
+            upper = True
+        if password[i].islower():
+            lower = True
+        if any(password[i] in word for word in specialChar):
+            special = True
+    if not upper or not lower or not special or (len(password) < 6):
+        return False
+    else:
+        return True
+
+
+''' This function is used to check that the email formatting is correct.
+We use a regular expression to make sure that all the conditions of 
+a regular email address is met. Length of email is also checked.
+Input: string variable email
+Output: string error message'''
+def check_email_format(email):
+
+    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+
+    if not re.search(regex, email) or len(email) < 3:  # email must be in RFC5322 format
+        return False
+    else:
+        return True
+
+
+''' This function is used to check if there are spaces in the first or 
+last index of the word. 
+Input: string word 
+Output: boolean '''
+def check_spaces(word):
+
+    if word[0] == " " or word[-1] == " ":
+        return False
+    else:
+        return True
+
+
+''' This function is used to check if the word passed is is only 
+alphanumeric (it can only contain letters, numbers or spaces).
+Input: string word
+Output: Boolean'''
+def check_alnum(word):
+    for char in range(len(word)):
+        if not (word[char].isalnum() or word[char].isspace()):
+            return False
+    return True
+
+
 @app.route('/register', methods=['POST'])
 def register_post():
     email = request.form.get('email')
@@ -25,85 +88,42 @@ def register_post():
     password2 = request.form.get('password2')
     error_message = ""
 
-    # for validation:
-    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-    specialCharacters = "!@#$%^&*+=~`-_/"
-
-    #The passwords do not match
+    # The passwords do not match
     if password != password2:
-        print("password no match")
-        error_message = "The passwords do not match"
+        return render_template('register.html', message="The passwords do not match")
 
-    #The email too short
-    if len(email) < 1:
-        print("short email")
-        error_message = "Email format error"
+    # The email format and email length is wrong
+    if not check_email_format(email):
+        return render_template('register.html', message="Email format is incorrect")
 
-    #The email format is wrong
-    if not re.search(regex, email):  # email must be in RFC5322 format
-        print("invalid email")
-        error_message = "Email not in RFC5322 format"
+    # The password format is wrong
+    if not check_special_pass(password):
+        return render_template('register.html', message="Password format is incorrect")
 
-    #Password to short
-    if len(password) < 6:  # changed to < 6 to satisfy length requirement
-        print("pass to short")
-        error_message = "Password not long enough"
+    # Name is less than 2 characters or longer than 20 character
+    if len(name) <= 2 or len(name) >= 20:
+        return render_template('register.html', message="Name length formatting error")
 
-    #Password not valid
-    if len(password) > 5:  # check to make password is complex enough
-        print("check valid pass")
-        upper = False
-        lower = False
-        special = False
-        for char in range(len(password)):
-            if password[char].isupper():
-                upper = True
-            if password[char].islower():
-                lower = True
-            if any(password[char] in word for word in specialCharacters):
-                special = True
-        if not upper and not lower and not special:
-            error_message = "Password is not strong enough"
+    # Name has special char
+    if not check_alnum(name):
+        return render_template('register.html', message="Name contains special characters")
 
-    #Name is too short
-    if len(name) <= 2:  # name is less than 2 characters or longer than 20 characters
-        print("name to short")
-        error_message = "Name length formatting error"
+    # Space error
+    if not check_spaces(name):
+        return render_template('register.html', message="Invalid spaces found in word")
 
-    #Name is too long
-    if len(name) >= 20:
-        print("name to long")
-        error_message = "Name length formatting error"
-
-    #Name has special char
-    if len(name) > 0:  # name is not alpha-numeric
-        print("name spec char")
-        for char in range(len(name)):
-            if (not name[char].isalnum()) or (name[char].isspace()):
-                error_message = "Name contains special characters"
-
-
-    #Space error
-    if name[0] == " " or name[-1] == " ":  # spaces are in the first or last index of string
-        print("space err")
-        error_message = "Spacing error in name"
-
-    #No error message, so no issue with validity of credentials
-    if error_message == "":
-        user = bn.get_user(email)
-        if user:
-            error_message = "This email has already been used"  # changed error message to satisfy requirement
-        elif not bn.register_user(email, name, password, password2):  # new instance of user created
-            error_message = "Failed to store user info."
+    # No errors, so no returns on function has been called, so no issue with validity of credentials
+    user = bn.get_user(email)
+    if user:
+        error_message = "This email has already been used"  # changed error message to satisfy requirement
+    elif not bn.register_user(email, name, password, password2):  # new instance of user created
+        error_message = "Failed to store user info."
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
 
-
     if error_message != "":
-        print("if error messg")
         return render_template('register.html', message=error_message)
     else:
-        print("redirect")
         return redirect('/login')
 
 
@@ -125,23 +145,13 @@ def login_post():
     if email == "" or password == "":
         return render_template('login.html', message="Email/password cant be blank")
 
-    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-    if not re.search(regex, email):
-        return render_template('login.html', message="Email/Password format is incorrect")
+    # "Email format is incorrect" should be error message
+    if not check_email_format(email):
+        return render_template('login.html', message="Email format is incorrect")
 
-    specialChar = "!@#$%^&*()_-+=/"
-    special = False
-    upper = False
-    lower = False
-    for i in range(len(password)):
-        if password[i].isupper():
-            upper = True
-        if password[i].islower():
-            lower = True
-        if any(password[i] in word for word in specialChar):
-            special = True
-    if not upper or not lower or not special or (len(password) < 6):
-        return render_template('login.html', message="Email/Password format is incorrect")
+    # Password format is wrong
+    if not check_special_pass(password):
+        return render_template('login.html', message="Password format is incorrect")
 
     if user:
         session['logged_in'] = user.email
@@ -215,91 +225,97 @@ def profile(user):
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
 
+
 @app.route('/*')
 def error():
     return redirect('/', code=404)
 
+
+''' This function checks the quantity/price of a ticket and makes sure 
+it is in the valid length range.
+Input: valid range and int ticket quantity/price
+Output: boolean'''
+def check_quantity(low,high,item):
+
+    if item <= low or item >= high:
+        return False
+    else:
+        return True
+
+
 @app.route('/sell', methods=["POST"])
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def sell_ticket(user):
-    # This function will display the buy ticket page to the user
-    # We need the user information and the ticker information
-    # This will then display the buy.html page
-
-    #Need code for user entering which ticket tehy watn to buy
-
     ticket_name = request.form.get('name')
     ticket_quantity = request.form.get('quantity')
-
     error_message = ""
 
     # There must not be a space at beggining or end, and the name mus tbe alphanumeric
-    if (ticket_name[0] == " " or ticket_name[-1] == " " or not ticket_name.isalnum()):
-        error_message = "Invalid ticket name"
+    if not check_spaces(ticket_name):
+        return render_template('sell.html', message="Invalid spaces found in word")
 
     # Ticket name must be shroter than 60 characters
-    if (len(ticket_name) > 60):
-        error_message = "Ticket name too long"
+    if len(ticket_name) > 60:
+        return render_template('sell.html', message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
-    if (ticket_quantity <= 0 or ticket_quantity > 100):
-        error_message = "Invalid amount of tickets"
+    if not check_quantity(1, 101, ticket_quantity):
+        return render_template('sell.html', message="Invalid quantity of tickets")
 
     if error_message != "":
-        return render_template('buy.html', message=error_message)
+        return render_template('sell.html', message=error_message)
 
     ticket = bn.get_tickets(ticket_name)
 
-    if ticket.price < 10 or ticket.price > 100:
-        error_message = "Invalid ticket price"
+    if not check_quantity(9, 101, ticket.price):
+        return render_template('/', message="Invalid quantity of tickets")
 
-    #Ticket date must be in valid format YYYYMMDD
-    #Assumption: ticket dates will start from today (2020-11-26) and go onwards
+    # Ticket date must be in valid format - YYYYMMDD
+    # Assumption: ticket dates will start from today (2020-11-26) and go onwards
     if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
     int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
-        error_message = "Invalid ticket data"
+        return render_template('/', message="Invalid ticket date")
 
     if error_message != "":
         return redirect('/', message=error_message)
     else:
-        #Add the ticket to the user's list of tickets.
+        # Add the ticket to the user's list of tickets.
         bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
         return render_template('buy.html', user=user, ticket=ticket)
-
 
 
 @app.route('/buy', methods=['POST'])
 # @authenticate  # (??) not sure if we need this here to authenticate user
 def buy_ticket(user):
-    '''THIS IS ACTUALLY CODE FOR BUY_TICKET'''
-    # This function will display the buy ticker page to the user
-    # We need the user information and the ticker information
-    # This will then display the sell.html page
-    name = request.form.get('name')
-    quantity = request.form.get('quantity')
+    ticket_name = request.form.get('name')
+    ticket_quantity = request.form.get('quantity')
     error_message = ""
 
-    # ticket contains invalid spaces, or ticket is not alphanumeric
-    if name[0] == " " or name[-1] == " " or not name.isalnum():
-        error_message = "Invalid ticket name"
+    # ticket contains invalid spaces
+    if not check_spaces(ticket_name):
+        return render_template('buy.html', message="Invalid spaces found in word")
+
+    # Check if ticket name is only alphanumeric
+    if not check_alnum(ticket_name):
+        return render_template('buy.html', message="Word contains invalid characters")
 
     # ticket name is longer than 60 chars
-    if len(name) > 60:
-        error_message = "Ticket name too long"
+    if len(ticket_name) > 60:
+        return render_template('buy.html', message="Ticket name is too long")
 
-    # ticket quantity has to be greater than zero and less than 100
-    if quantity <= 0 or quantity > 100:
-        error_message = "Invalid amount of tickets"
+    # Ticket quantity must be greater than 0 and less than or equal to 100
+    if not check_quantity(1, 101, ticket_quantity):
+        return render_template('buy.html', message="Invalid quantity of tickets")
 
-    ticket = bn.get_ticket(name)   # have a try catch error here?
+    ticket = bn.get_ticket(ticket_name)   # have a try catch error here?
 
     # ticket quantity has to be more than quantity requested to buy
-    if quantity > ticket.quantity:
-        error_messsage = "Requested quantity larger than available tickets"
+    if ticket_quantity > ticket.quantity:
+        return render_template('buy.html', message="Requested quantity larger than available tickets")
 
     # user has to have more balance than ticket price + xtra fees
-    if user.balance < (ticket.price * quantity * 1.35 * 1.05):
-        error_message = "User balance not enough for purchase"
+    if user.balance < (ticket.price * ticket_quantity * 1.35 * 1.05):
+        return render_template('buy.html', message="User balance not enough for purchase")
 
     # redirect and display error message if possible
     if error_message != "":
@@ -319,49 +335,43 @@ def update_ticket(user):
     # We need the user information and the ticket information
     # This will then display the update.html page
 
-
-
-
     ticket_name = request.form.get('name')  # using name but should id be used instead?
     ticket_quantity = request.form.get('quantity')
 
     error_message = ""
 
     # There must not be a space at beginning or end
-    if ticket_name[0] == " " or ticket_name[-1] == " " or not ticket_name.isalnum():
-        error_message = "Invalid ticket name"
+    if not check_spaces(ticket_name):
+        return render_template('/', message="Invalid spaces found in ticket name")
 
-    # the name must be alphanumeric
-    if len(ticket_name) > 0:  # name is not alpha-numeric
-        for char in range(len(ticket_name)):
-            if not ticket_name[char].isalnum():
-                error_message = "Name contains special characters"
+    # The name must be alphanumeric
+    if not check_alnum(ticket_name):
+        return render_template('/', message="Name contains special characters")
 
-    # the name of the ticket is no longer than 60 characters
+    # The name of the ticket is no longer than 60 characters
     if len(ticket_name) > 60:
-        error_message = "Ticket name too long"
+        return render_template('/', message="Ticket name too long")
 
-    # the quantity of the tickets has to be more than 0, and less than or equal to 100
-    if ticket_quantity <= 0 or ticket_quantity > 100:
-        error_message = "Invalid amount of tickets"
+    # The quantity of the tickets has to be more than 0, and less than or equal to 100
+    if not check_quantity(1, 101, ticket_quantity):
+        return render_template('/', message="Invalid quantity of tickets")  # CHANGE REROUTE TO /UPDATE????
 
     ticket = bn.get_ticket(ticket_name)
 
-    # the ticket of the given name must exist
+    # The ticket of the given name must exist
     if ticket is None:
-        error_message = "Ticket does not exist"
+        return render_template('/', message="Ticket does not exist")
 
-    # price has to be of range [10, 100]
-    if ticket.price < 10 or ticket.price > 100:
-        error_message = "Invalid ticket price"
+    # Price has to be of range [10, 100]
+    if not check_quantity(9, 101, ticket_quantity):
+        return render_template('/', message="Invalid ticket price")
 
-    # date must be given in format YYYYMMDD
+    # Date must be given in format YYYYMMDD
     if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
             int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
-        error_message = "Invalid ticket data"
+        return render_template('/', message="Invalid ticket date")
 
-
-    # for any errors, redirect back to / and show an error message
+    # For any errors, redirect back to / and show an error message
     if error_message != "":
-    
         return redirect('/', message=error_message)
+    # If there are no errors?
