@@ -763,7 +763,7 @@ class FrontEndHomePageTest(BaseCase):
 
         self.click('input[type="submit"]')
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Email format is incorrect", "#message")
 
 
     @patch('qa327.backend.get_user', return_value=test_user)
@@ -801,7 +801,7 @@ class FrontEndHomePageTest(BaseCase):
         #click enter button
         self.click('input[type="submit"]')
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Email format is incorrect", "#message")
 
     # Ensure that the login page is showing after the user submits logout. Ensure that none of
     # the pages can be accessed if user tries to type in their address.
