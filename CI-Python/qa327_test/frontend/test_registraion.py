@@ -8,6 +8,7 @@ from qa327.models import db, User, Form
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests
 
+
 """
 This file defines all unit tests for the frontend homepage.
 
@@ -103,7 +104,7 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # make sure it shows proper error message
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Password format is incorrect", "#message")
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)

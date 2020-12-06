@@ -3,6 +3,8 @@ from qa327 import app
 import qa327.backend as bn
 import re
 
+
+
 """
 This file defines the front-end part of the service.
 It elaborates how the services should handle different
@@ -137,7 +139,6 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     user = bn.login_user(email, password)
-    print(user)
     """
     Validation for email/password. We must check for blank email or password, 
     invalid password, and invalid email
