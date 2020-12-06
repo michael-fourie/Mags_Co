@@ -8,6 +8,7 @@ from qa327.models import db, User, Form
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests
 
+
 """
 This file defines all unit tests for the frontend homepage.
 
@@ -103,7 +104,7 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # make sure it shows proper error message
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Password format is incorrect", "#message")
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -273,7 +274,7 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # validate error message is shown for spacing error in name
         self.assert_element("#message")
-        self.assert_text("Spacing error in name", "#message")
+        self.assert_text("Invalid spaces found in word", "#message")
 
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -319,18 +320,42 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Name length formatting error", "#message")
 
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_email_short(self, *_):  # R2.8B and R2.9 [POST]
+        '''Email has to be longer than 1 character'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "a")
+        # enter name into element
+        self.type("#name", 'nameregister')
+        # enter password1 into element
+        self.type("#password", 'Name_register@1')
+        # enter password 2 into element
+        self.type("#password2", 'Name_register@1')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for length error in name
+        self.assert_element("#message")
+        self.assert_text("Email format is incorrect", "#message")
+
+
     @patch('qa327.backend.get_user', return_value=None)
     @patch('qa327.backend.register_user', return_value=test_user_register)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_register_format(self, *_):  # R2.8B and R2.9 [POST]
+    def test_register_format_email(self, *_):  # R2.8B and R2.9 [POST]
         '''For any formatting errors, redirect back to /login and show message '{}
-        format is incorrect.'.format(the_corresponding_attribute)'''
+        format is incorrect.'.format(the_corresponding_attribute)
+        For email formatting errors'''
         # log out any previous users
         self.open(base_url + '/logout')
         # open register page
         self.open(base_url + '/register')                               
         # enter email into element
-        self.type("#email", "register@test.ca")
+        self.type("#email", "invalidemail")
         # enter name into element
         self.type("#name", 'nameregister')
         # enter password1 into element
@@ -341,7 +366,33 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # validate error message is shown for formatting error in name
         self.assert_element("#message")
-        self.assert_text("Please login", "#message")
+        self.assert_text("Email format is incorrect", "#message")
+
+    @patch('qa327.backend.get_user', return_value=None)
+    @patch('qa327.backend.register_user', return_value=test_user_register)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_format_password(self, *_):  # R2.8B and R2.9 [POST]
+        '''For any formatting errors, redirect back to /login and show message '{}
+        format is incorrect.'.format(the_corresponding_attribute)
+        For password formatting errors.'''
+        # log out any previous users
+        self.open(base_url + '/logout')
+        # open register page
+        self.open(base_url + '/register')
+        # enter email into element
+        self.type("#email", "register@test.ca")
+        # enter name into element
+        self.type("#name", 'nameregister')
+        # enter password1 into element
+        self.type("#password", 'invalidpass')
+        # enter password 2 into element
+        self.type("#password2", 'invalidpass')
+        # click enter button
+        self.click('input[type="submit"]')
+        # validate error message is shown for formatting error in name
+        self.assert_element("#message")
+        self.assert_text("Password format is incorrect", "#message")
+
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.register_user', return_value=test_user_register)
@@ -674,8 +725,8 @@ class FrontEndHomePageTest(BaseCase):
         self.type("#password", "Test_frontend@")
         # click enter button
         self.click('input[type="submit"]')
-        self.assert_text("Email/Password format is incorrect", "#message")
-        # fill email and password, email is valid and follows guidlines,
+        self.assert_text("Email format is incorrect", "#message")
+        # fill email and password, email is valid and follows guidelines,
         self.type("#email", "test_frontend@test.com")
         self.type("#password", "Test_frontend@")
         # click enter button
@@ -697,7 +748,7 @@ class FrontEndHomePageTest(BaseCase):
         self.type("#email", "test_frontend@test.com")
         self.click('input[type="submit"]')
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Password format is incorrect", "#message")
 
     @patch('qa327.backend.get_user', return_value=test_user)
     def test_formatting_errors(self, *_):
@@ -713,7 +764,7 @@ class FrontEndHomePageTest(BaseCase):
 
         self.click('input[type="submit"]')
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Email format is incorrect", "#message")
 
 
     @patch('qa327.backend.get_user', return_value=test_user)
@@ -751,7 +802,7 @@ class FrontEndHomePageTest(BaseCase):
         #click enter button
         self.click('input[type="submit"]')
         self.assert_element("#message")
-        self.assert_text("Email/Password format is incorrect", "#message")
+        self.assert_text("Email format is incorrect", "#message")
 
     # Ensure that the login page is showing after the user submits logout. Ensure that none of
     # the pages can be accessed if user tries to type in their address.
