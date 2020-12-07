@@ -286,11 +286,13 @@ def sell_ticket(user):
 
 
 @app.route('/buy', methods=['POST'])
-# @authenticate  # (??) not sure if we need this here to authenticate user
-def buy_ticket(user):
+def buy_ticket():
     ticket_name = request.form.get('name')
     ticket_quantity = request.form.get('quantity')
     error_message = ""
+
+    #necessary?
+    ticket_quantity = int(ticket_quantity)
 
     # ticket contains invalid spaces
     if not check_spaces(ticket_name):
@@ -309,6 +311,8 @@ def buy_ticket(user):
         return render_template('buy.html', message="Invalid quantity of tickets")
 
     ticket = bn.get_ticket(ticket_name)   # have a try catch error here?
+    if ticket is None:
+        return render_template('buy.html', message="Ticket not found in database.")
 
     # ticket quantity has to be more than quantity requested to buy
     if ticket_quantity > ticket.quantity:
@@ -360,7 +364,7 @@ def update_ticket(user):
     ticket = bn.get_ticket(ticket_name)
 
     # The ticket of the given name must exist
-    if ticket is None:
+    if not ticket:
         return render_template('/', message="Ticket does not exist")
 
     # Price has to be of range [10, 100]

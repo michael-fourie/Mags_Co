@@ -45,15 +45,13 @@ test_tickets = [
     {'name': 't1', 'price': '100', 'quantity': '2', 'email': 'test123@email.com', 'date': '02/23/2020'}
 ]
 
-
-# Mock a sample buy form
+# Mock a sample sell form
 test_sell_form = Form(
-    name='buy_tix',
+    name='sell_tix',
     quantity='2',
     price='50',
     date='02/23/2020'
 )
-
 
 
 class FrontEndHomePageTest(BaseCase):
