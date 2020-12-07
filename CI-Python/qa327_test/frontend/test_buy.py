@@ -84,7 +84,7 @@ class FrontEndBuyTest(BaseCase):
         self.type("#name_buy", "I_valid")
         # Type in ticket quantity
         self.type("#quantity_buy", "5")
-        # click submit button for buy
+        # click submit button for buy    <------ this is where it's not responding!
         self.click("#submit-buy")
         # make sure it shows proper error message
         self.assert_element("#message")
@@ -92,10 +92,15 @@ class FrontEndBuyTest(BaseCase):
 
         """
         README:
-        Have been using this test case to try to figure ou tbutton issue. I just 
-        have all the test cases written below and will then complete them when button
-        issue has been figured out, so disregard all the test cases below.
+        Have been using this test case above to try to figure ou tbutton issue. 
+        I just have all the test cases written below and will then complete 
+        them when the button issue has been figured out, so disregard all the 
+        test cases below.
         """
+
+
+
+
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
