@@ -285,7 +285,7 @@ def sell_ticket(user):
         return render_template('buy.html', user=user, ticket=ticket)
 
 
-@app.route('/buy', methods=['POST'])
+@app.route('/', methods=['POST'])
 def buy_ticket():
     ticket_name = request.form.get('name')
     ticket_quantity = request.form.get('quantity')
