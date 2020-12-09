@@ -211,6 +211,8 @@ def authenticate(inner_function):
             # else, redirect to the login page
             return redirect('/login')
 
+    wrapped_inner.__name__ = inner_function.__name__        # Added to make authenticate work
+    # Above: this allows other functions to use the authenticate function
     # return the wrapped version of the inner_function:
     return wrapped_inner
 
@@ -245,37 +247,37 @@ def check_quantity(low,high,item):
 
 
 @app.route('/sell', methods=["POST"])
-# @authenticate  # (??) not sure if we need this here to authenticate user
+@authenticate  # Needed to access instance of user
 def sell_ticket(user):
     ticket_name = request.form.get('name')
     ticket_quantity = request.form.get('quantity')
     error_message = ""
 
-    # There must not be a space at beggining or end, and the name mus tbe alphanumeric
+    # There must not be a space at beginning or end, and the name mus tbe alphanumeric
     if not check_spaces(ticket_name):
-        return render_template('sell.html', message="Invalid spaces found in word")
+        return render_template('index.html', user=user, message="Invalid spaces found in word")
 
-    # Ticket name must be shroter than 60 characters
+    # Ticket name must be shorter than 60 characters
     if len(ticket_name) > 60:
-        return render_template('sell.html', message="Ticket name is too long")
+        return render_template('index.html', user=user, message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
     if not check_quantity(1, 101, ticket_quantity):
-        return render_template('sell.html', message="Invalid quantity of tickets")
+        return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
     if error_message != "":
-        return render_template('sell.html', message=error_message)
+        return render_template('index.html', user=user, message=error_message)
 
     ticket = bn.get_tickets(ticket_name)
 
     if not check_quantity(9, 101, ticket.price):
-        return render_template('/', message="Invalid quantity of tickets")
+        return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
     # Ticket date must be in valid format - YYYYMMDD
     # Assumption: ticket dates will start from today (2020-11-26) and go onwards
     if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
     int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
-        return render_template('/', message="Invalid ticket date")
+        return render_template('index.html', user=user, message="Invalid ticket date")
 
     if error_message != "":
         return redirect('/', message=error_message)
@@ -286,7 +288,7 @@ def sell_ticket(user):
 
 
 @app.route('/buy', methods=['POST'])
-# @authenticate  # (??) not sure if we need this here to authenticate user
+@authenticate  # Needed to access instance of user
 def buy_ticket(user):
     ticket_name = request.form.get('name')
     ticket_quantity = request.form.get('quantity')
@@ -294,29 +296,29 @@ def buy_ticket(user):
 
     # ticket contains invalid spaces
     if not check_spaces(ticket_name):
-        return render_template('buy.html', message="Invalid spaces found in word")
+        return render_template('index.html', user=user, message="Invalid spaces found in word")
 
     # Check if ticket name is only alphanumeric
     if not check_alnum(ticket_name):
-        return render_template('buy.html', message="Word contains invalid characters")
+        return render_template('index.html', user=user, message="Word contains invalid characters")
 
     # ticket name is longer than 60 chars
     if len(ticket_name) > 60:
-        return render_template('buy.html', message="Ticket name is too long")
+        return render_template('index.html', user=user, message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
     if not check_quantity(1, 101, ticket_quantity):
-        return render_template('buy.html', message="Invalid quantity of tickets")
+        return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
     ticket = bn.get_ticket(ticket_name)   # have a try catch error here?
 
     # ticket quantity has to be more than quantity requested to buy
     if ticket_quantity > ticket.quantity:
-        return render_template('buy.html', message="Requested quantity larger than available tickets")
+        return render_template('index.html', user=user, message="Requested quantity larger than available tickets")
 
     # user has to have more balance than ticket price + xtra fees
     if user.balance < (ticket.price * ticket_quantity * 1.35 * 1.05):
-        return render_template('buy.html', message="User balance not enough for purchase")
+        return render_template('index.html', user=user, message="User balance not enough for purchase")
 
     # redirect and display error message if possible
     if error_message != "":
@@ -330,7 +332,7 @@ def buy_ticket(user):
 
 
 @app.route('/update')
-# @authenticate  # (??) not sure if we need this here to authenticate user
+@authenticate  # Needed to access instance of user
 def update_ticket(user):
     # This function will display the update ticket page to the user
     # We need the user information and the ticket information
@@ -343,36 +345,36 @@ def update_ticket(user):
 
     # There must not be a space at beginning or end
     if not check_spaces(ticket_name):
-        return render_template('/', message="Invalid spaces found in ticket name")
+        return render_template('index.html', user=user, message="Invalid spaces found in ticket name")
 
     # The name must be alphanumeric
     if not check_alnum(ticket_name):
-        return render_template('/', message="Name contains special characters")
+        return render_template('index.html', user=user, message="Name contains special characters")
 
     # The name of the ticket is no longer than 60 characters
     if len(ticket_name) > 60:
-        return render_template('/', message="Ticket name too long")
+        return render_template('index.html', user=user, message="Ticket name too long")
 
     # The quantity of the tickets has to be more than 0, and less than or equal to 100
     if not check_quantity(1, 101, ticket_quantity):
-        return render_template('/', message="Invalid quantity of tickets")  # CHANGE REROUTE TO /UPDATE????
+        return render_template('index.html', user=user, message="Invalid quantity of tickets")  # CHANGE REROUTE TO /UPDATE????
 
     ticket = bn.get_ticket(ticket_name)
 
     # The ticket of the given name must exist
     if ticket is None:
-        return render_template('/', message="Ticket does not exist")
+        return render_template('index.html', user=user, message="Ticket does not exist")
 
     # Price has to be of range [10, 100]
     if not check_quantity(9, 101, ticket_quantity):
-        return render_template('/', message="Invalid ticket price")
+        return render_template('index.html', user=user, message="Invalid ticket price")
 
     # Date must be given in format YYYYMMDD
     if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
             int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
-        return render_template('/', message="Invalid ticket date")
+        return render_template('index.html', user=user, message="Invalid ticket date")
 
     # For any errors, redirect back to / and show an error message
     if error_message != "":
-        return redirect('/', message=error_message)
+        return redirect('index.html', user=user, message=error_message)
     # If there are no errors?
