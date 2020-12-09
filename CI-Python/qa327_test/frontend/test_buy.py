@@ -122,7 +122,7 @@ class FrontEndBuyTest(BaseCase):
         # Type in ticket quantity
         self.type("#quantity_buy", "5")
         # click submit button for buy
-        self.click('input[id="form_buy"]')
+        self.click("#submit-buy")
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("Invalid spaces found in word", "#message")
@@ -147,7 +147,7 @@ class FrontEndBuyTest(BaseCase):
             # Type in ticket quantity
             self.type("#quantity_buy", "5")
             # click submit button for buy
-            self.click('input[id="form_buy"]')
+            self.click("#submit-buy")
             # make sure it shows proper error message
             self.assert_element("#message")
             self.assert_text("Ticket name is too long", "#message")
@@ -171,7 +171,7 @@ class FrontEndBuyTest(BaseCase):
         # Type in ticket quantity
         self.type("#quantity_buy", "-1")
         # click submit button for buy
-        self.click('input[id="form_buy"]')
+        self.click("#submit-buy")
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("Invalid quantity of tickets", "#message")
@@ -195,7 +195,7 @@ class FrontEndBuyTest(BaseCase):
         # Type in ticket quantity
         self.type("#quantity_buy", "101")
         # click submit button for buy
-        self.click('input[id="form_buy"]')
+        self.click("#submit-buy")
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("Invalid quantity of tickets", "#message")
