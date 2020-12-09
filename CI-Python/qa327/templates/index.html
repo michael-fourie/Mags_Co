@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
+<h4 id='message'>{{message}}</h4>
 <h1>{% block title %}Profile{% endblock %}</h1>
 {% endblock %}
 
@@ -23,7 +24,7 @@
 
 <div>
   <h4>Sell Ticket</h4>
-  <form method="POST" id="form_sell" action="localhost:8081/sell">
+  <form method="POST" id="form_sell" action="/sell">
     <label for="name_sell">Name:</label>
     <input type="text" id="name_sell" name="name"><br><br>
     <label for="quantity_sell">Quantity:</label>
@@ -37,7 +38,7 @@
 
   <br>
   <h4>Buy Ticket</h4>
-  <form method="POST" id="form_buy" action="localhost:8081/buy">
+  <form method="POST" id="form_buy" action="/buy">
     <label for="name_buy">Name:</label>
     <input type="text" id="name_buy" name="name"><br><br>
     <label for="quantity_buy">Quantity:</label>
@@ -47,7 +48,7 @@
 
   <br>
   <h4>Update Ticket</h4>
-  <form method="POST" id="form_update" action="localhost:8081/update">
+  <form method="POST" id="form_update" action="/update">
     <label for="name_update">Name:</label>
     <input type="text" id="name_update" name="name"><br><br>
     <label for="quantity_update">Quantity:</label>
