@@ -307,28 +307,28 @@ def buy_ticket(user):
         return render_template('index.html', user=user, message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
-    if not check_quantity(1, 101, ticket_quantity):
+    if not check_quantity(1, 101, int(ticket_quantity)):
         return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
     ticket = bn.get_ticket(ticket_name)   # have a try catch error here?
 
     # ticket quantity has to be more than quantity requested to buy
-    if ticket_quantity > ticket.quantity:
+    if int(ticket_quantity) > ticket.quantity:
         return render_template('index.html', user=user, message="Requested quantity larger than available tickets")
 
     # user has to have more balance than ticket price + xtra fees
-    if user.balance < (ticket.price * ticket_quantity * 1.35 * 1.05):
+    if user.balance < (ticket.price * int(ticket_quantity) * 1.35 * 1.05):
         return render_template('index.html', user=user, message="User balance not enough for purchase")
 
     # redirect and display error message if possible
     if error_message != "":
         return redirect('/', message=error_message)
     else:  # add ticket to user's profile
-        user.tickets.append(ticket)  # NEED TO CREATE A TICKET ARRAY IN USER MODEL NOT STRING
+        bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
         # Check if this works
-        ticket = bn.get_all_tickets() # get all tickets and display sell.html (?)
+        ticket_list = bn.get_all_tickets()  # get all tickets and display sell.html (?)
         # Now shows updated tickets for user and redirects to sell page
-        return render_template('sell.html', user=user, ticket=ticket)
+        return render_template('buy.html', user=user, ticket=ticket_list)
 
 
 @app.route('/update')
