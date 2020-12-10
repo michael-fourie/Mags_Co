@@ -328,7 +328,7 @@ def buy_ticket(user):
         # Check if this works
         ticket_list = bn.get_all_tickets()  # get all tickets and display sell.html (?)
         # Now shows updated tickets for user and redirects to sell page
-        return render_template('buy.html', user=user, ticket=ticket_list)
+        return render_template('index.html', user=user, message="Ticket bought successfully")
 
 
 @app.route('/update')

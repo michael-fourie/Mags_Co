@@ -247,5 +247,5 @@ class FrontEndBuyTest(BaseCase):
         self.click("#submit-buy")
         # make sure it shows proper error message
         self.assert_element("#message")
-        self.assert_text("Welcome test_frontend !", "#message")
+        self.assert_text("Ticket bought successfully", "#message")
 
