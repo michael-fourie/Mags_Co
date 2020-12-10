@@ -312,6 +312,10 @@ def buy_ticket(user):
 
     ticket = bn.get_ticket(ticket_name)   # have a try catch error here?
 
+    if not ticket:
+        return render_template('index.html', user=user, message="Ticket does not exist")
+
+
     # ticket quantity has to be more than quantity requested to buy
     if int(ticket_quantity) > ticket.quantity:
         return render_template('index.html', user=user, message="Requested quantity larger than available tickets")

@@ -48,7 +48,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
     @patch('qa327.backend.register_ticket', return_value=test_ticket)
-    def test_invalid_name_alnum(self, *_):
+    def test_buy_invalid_name_alnum(self, *_):
         """ R6.1A The name of the ticket has to be alphanumeric-only, and space
         allowed only if it is not the first or the last character."""
         self.open(base_url + '/logout')
@@ -79,7 +79,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
-    def test_invalid_name_spaces(self, *_):
+    def test_buy_invalid_name_spaces(self, *_):
         """ R6.1B The name of the ticket can have spaces allowed only
         if it is not the first or the last character."""
         self.open(base_url + '/logout')
@@ -104,7 +104,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
-    def test_invalid_name_long(self, *_):
+    def test_buy_invalid_name_long(self, *_):
         """ R6.2 The name of the ticket is no longer than 60 characters."""
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
@@ -129,7 +129,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
-    def test_invalid_quantity_neg(self, *_):
+    def test_buy_invalid_quantity_neg(self, *_):
         """ R6.3A The quantity of the tickets has to be more than 0."""
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
@@ -153,7 +153,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
-    def test_invalid_quantity_big(self, *_):
+    def test_buy_invalid_quantity_big(self, *_):
         """ R6.3B The quantity of the tickets has to be less than or equal to 100."""
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
@@ -176,9 +176,33 @@ class FrontEndBuyTest(BaseCase):
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    @patch('qa327.backend.get_ticket', return_value=None)
+    def test_buy_name_does_not_exist(self, *_):
+        """ R6.4A The ticket name exists in the database."""
+        self.open(base_url + '/logout')
+        self.open(base_url + '/login')
+        # fill email and password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "Test_frontend@")
+        # click enter button
+        self.click('input[type="submit"]')
+        # open home page
+        self.open(base_url)
+        # Type invalid ticket name
+        self.type("#name_buy", "wrong")
+        # Type in ticket quantity
+        self.type("#quantity_buy", "2")
+        # click submit button for buy
+        self.click("#submit-buy")
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Ticket does not exist", "#message")
+
+    @patch('qa327.backend.get_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
-    def test_invalid_quantity_for_name(self, *_):
-        """ R6.4 The ticket name exists in the database and the
+    def test_buy_invalid_quantity_for_name(self, *_):
+        """ R6.4B The ticket name exists in the database and the
         quantity is more than the quantity requested to buy."""
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
@@ -202,7 +226,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_poor_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
-    def test_balance_not_enough(self, *_):
+    def test_buy_balance_not_enough(self, *_):
         """ R6.5 The user has more balance than the ticket price * quantity
         + service fee (35%) + tax (5%)"""
         self.open(base_url + '/logout')
