@@ -300,7 +300,7 @@ def buy_ticket(user):
 
     # Check if ticket name is only alphanumeric
     if not check_alnum(ticket_name):
-        return render_template('index.html', user=user, message="Word contains invalid characters")
+        return render_template('index.html', user=user, message="Name contains invalid characters")
 
     # ticket name is longer than 60 chars
     if len(ticket_name) > 60:

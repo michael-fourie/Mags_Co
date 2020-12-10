@@ -43,20 +43,6 @@ test_tickets = [
     Ticket(name='t2', price=110, quantity=10, email='test2@gmail.com', date='20200314')
  ]
 
-# Mock a sample sell form
-test_sell_form = Form(
-    name='sell_tix',
-    quantity='2',
-    price='50',
-    date='02/23/2020'
-)
-# Mock a sample buy form
-test_buy_form = Form(
-    name='buy_tix',
-    quantity='2',
-    price='50',
-    date='02/23/2020'
-)
 class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
@@ -82,7 +68,7 @@ class FrontEndBuyTest(BaseCase):
         self.click("#submit-buy")
         # make sure it shows proper error message
         self.assert_element("#message")
-        self.assert_text("Word contains invalid characters", "#message")
+        self.assert_text("Name contains invalid characters", "#message")
         """
         README:
         Have been using this test case above to try to figure ou tbutton issue. 
