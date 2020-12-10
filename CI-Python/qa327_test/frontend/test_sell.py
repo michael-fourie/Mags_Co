@@ -59,7 +59,7 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         #Enter an invalid ticket name
         self.type('#name_sell', " invalid ")
-        self.type("#price_sell", 100)
+        self.type("#price_sell", "100")
         self.type("#quantity_sell", "2")
         self.type("#exp_date_sell", "20200921")
         self.click('#submit-sell')
@@ -85,7 +85,7 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         # Enter an invalid ticket name
         self.type('#name_sell', "thisnamewillbewaytoolongforitevertobevalidihopeimeanwhatticketwilleverneedanamethatsthislongisthisoversixtycharactersyetidontknowbutletshopeso")
-        self.type("#price_sell", 100)
+        self.type("#price_sell", "100")
         self.type("#quantity_sell", "2")
         self.type("#exp_date_sell", "20200921")
         self.click('#submit-sell')
@@ -157,8 +157,8 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         # Enter an invalid ticket name
         self.type('#name_sell', "testticket")
-        self.type("#quantity_sell", 1)
-        self.type("#price_sell", 101)
+        self.type("#quantity_sell", "1")
+        self.type("#price_sell", "101")
         self.click('#submit-sell')
         # Assert that the valid error message is shown.
         self.assert_text("Ticket price outside of valid range", "#message")
@@ -176,8 +176,8 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         # Enter an invalid ticket name
         self.type('#name_sell', "testticket")
-        self.type("#quantity_sell", 1)
-        self.type("#price_sell", 9)
+        self.type("#quantity_sell", "1")
+        self.type("#price_sell", "9")
         self.click('#submit-sell')
         # Assert that the valid error message is shown.
         self.assert_text("Ticket price outside of valid range", "#message")
@@ -201,8 +201,8 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         # Enter an invalid ticket name
         self.type('#name_sell', "ticketname")
-        self.type("#price_sell", 10)
-        self.type("#quantity_sell", 1)
+        self.type("#price_sell", "10")
+        self.type("#quantity_sell", "1")
         self.type("#exp_date_sell", "09212020")
         self.click('#submit-sell')
         # Assert that the valid error message is shown.
@@ -227,8 +227,8 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         # Enter an invalid ticket info, should be redirected to / route
         self.type('#name_sell', " invalid ")
-        self.type("#price_sell", 1)
-        self.type("#quantity_sell", 0)
+        self.type("#price_sell", "1")
+        self.type("#quantity_sell", "0")
         self.type("#exp_date_sell", "09212020")
         self.click('#submit-sell')
         self.assert_element("#welcome-header")
@@ -256,7 +256,7 @@ class FrontEndSellTest(BaseCase):
         self.open(base_url)
         # Enter an invalid ticket info, should be redirected to / route
         self.type('#name_sell', "t1")
-        self.type("#price_sell", 100)
+        self.type("#price_sell", "100")
         self.type("#quantity_sell", "2")
         self.type("#exp_date_sell", "20200921")
         self.click('#submit-sell')
