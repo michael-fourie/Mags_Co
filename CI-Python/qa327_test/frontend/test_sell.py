@@ -25,8 +25,8 @@ test_user = User(
 # Mock some sample tickets
 test_ticket = Ticket(
     name='t1',
-    price=100,
-    quantity=2,
+    price="100",
+    quantity="2",
     email='test123@email.com',
     date='02/23/2020'
 )
