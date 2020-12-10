@@ -18,7 +18,7 @@ test_user = User(
     email='test_frontend@test.com',
     name='test_frontend',
     password=generate_password_hash('Test_frontend@'),
-    balance=500
+    balance="500"
 
 )
 
@@ -32,8 +32,8 @@ test_ticket = Ticket(
 )
 
 test_tickets = [
-    Ticket(name='t1', price=100, quantity=2, email='test1@email.com', date='20200223'),
-    Ticket(name='t2', price=110, quantity=10, email='test2@gmail.com', date='20200314')
+    Ticket(name='t1', price="100", quantity="2", email='test1@email.com', date='20200223'),
+    Ticket(name='t2', price="110", quantity="10", email='test2@gmail.com', date='20200314')
  ]
 
 class FrontEndSellTest(BaseCase):
