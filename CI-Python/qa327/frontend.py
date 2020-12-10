@@ -315,7 +315,6 @@ def buy_ticket(user):
     if not ticket:
         return render_template('index.html', user=user, message="Ticket does not exist")
 
-
     # ticket quantity has to be more than quantity requested to buy
     if int(ticket_quantity) > ticket.quantity:
         return render_template('index.html', user=user, message="Requested quantity larger than available tickets")
@@ -330,7 +329,7 @@ def buy_ticket(user):
     else:  # add ticket to user's profile
         bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
         # Check if this works
-        ticket_list = bn.get_all_tickets()  # get all tickets and display sell.html (?)
+        user.balance = user.balance - (ticket.price * int(ticket_quantity) * 1.35 * 1.05)
         # Now shows updated tickets for user and redirects to sell page
         return render_template('index.html', user=user, message="Ticket bought successfully")
 
