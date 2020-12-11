@@ -263,3 +263,4 @@ class FrontEndSellTest(BaseCase):
         self.assert_element("#welcome-header")
         # Assert that the valid error message is shown.
         self.assert_text("Hi test_frontend", "#welcome-header")
+

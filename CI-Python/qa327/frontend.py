@@ -277,7 +277,7 @@ def sell_ticket(user):
             int(ticket_date[6:]) < 0 or int(ticket_date[4:6]) > 31):
         return render_template('index.html', user=user, message="Invalid ticket date")
 
-    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user.id)
+    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user.email)
     tickets = bn.get_all_tickets()
     # Add the ticket to the user's list of tickets.
     return render_template('index.html', user=user, ticket=tickets)

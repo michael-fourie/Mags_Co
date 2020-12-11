@@ -99,7 +99,7 @@ def get_update():
     updated_ticket = Ticket(name,quantity,price,exp_date)
     return updated_ticket
 
-def sell_ticket(id, name, quantity, price, date, email):
+def sell_ticket(name, quantity, price, date, email):
     """
     Create new ticket in the database
     :param ticket_id: the id of the ticket to be updated
@@ -111,7 +111,6 @@ def sell_ticket(id, name, quantity, price, date, email):
     :return: an error message if there is any, or None if creation succeeds
     """
     ticket = Ticket()
-    ticket.id = id
     ticket.name = name
     ticket.quantity = quantity
     ticket.price = price
