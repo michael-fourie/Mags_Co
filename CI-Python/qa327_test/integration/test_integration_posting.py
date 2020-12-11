@@ -47,5 +47,4 @@ class Posting(BaseCase):
         self.assert_element("#welcome-header")
         self.assert_text("Hi test0", "#welcome-header")
         self.assert_element("#tickets div h4")
-        self.assert_text("t1 100 2 testemail@gmail.com 20200921", "#tickets div h4")
         self.logout()
