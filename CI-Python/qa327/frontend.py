@@ -246,11 +246,13 @@ def check_quantity(low,high,item):
         return True
 
 
-@app.route('/sell', methods=["POST"])
+@app.route('/sell', methods=['POST', "GET"])
 @authenticate  # Needed to access instance of user
 def sell_ticket(user):
     ticket_name = request.form.get('name')
-    ticket_quantity = request.form.get('quantity')
+    ticket_quantity = int(float(request.form.get('quantity')))
+    ticket_price = float(request.form.get('price'))
+    ticket_date = request.form.get('exp_date')
     error_message = ""
 
     # There must not be a space at beginning or end, and the name mus tbe alphanumeric
@@ -262,29 +264,23 @@ def sell_ticket(user):
         return render_template('index.html', user=user, message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
-    if not check_quantity(1, 101, ticket_quantity):
+    if not check_quantity(0, 101, ticket_quantity):
         return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
-    if error_message != "":
-        return render_template('index.html', user=user, message=error_message)
-
-    ticket = bn.get_tickets(ticket_name)
-
-    if not check_quantity(9, 101, ticket.price):
-        return render_template('index.html', user=user, message="Invalid quantity of tickets")
+    # Ticket price has to be of range [10,100]
+    if ticket_price > 100 or ticket_price < 10:
+        return render_template('index.html', user=user, message="Ticket price outside of valid range")
 
     # Ticket date must be in valid format - YYYYMMDD
     # Assumption: ticket dates will start from today (2020-11-26) and go onwards
-    if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
-    int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
+    if (int(ticket_date[:4]) < 2020 or int(ticket_date[4:6]) < 0 or int(ticket_date[4:6]) > 12 or
+            int(ticket_date[6:]) < 0 or int(ticket_date[4:6]) > 31):
         return render_template('index.html', user=user, message="Invalid ticket date")
 
-    if error_message != "":
-        return redirect('/', message=error_message)
-    else:
-        # Add the ticket to the user's list of tickets.
-        bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
-        return render_template('buy.html', user=user, ticket=ticket)
+    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user.email)
+    tickets = bn.get_all_tickets()
+    # Add the ticket to the user's list of tickets.
+    return render_template('index.html', user=user, ticket=tickets)
 
 
 @app.route('/buy', methods=['POST'])
@@ -300,35 +296,38 @@ def buy_ticket(user):
 
     # Check if ticket name is only alphanumeric
     if not check_alnum(ticket_name):
-        return render_template('index.html', user=user, message="Word contains invalid characters")
+        return render_template('index.html', user=user, message="Name contains invalid characters")
 
     # ticket name is longer than 60 chars
     if len(ticket_name) > 60:
         return render_template('index.html', user=user, message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
-    if not check_quantity(1, 101, ticket_quantity):
+    if not check_quantity(1, 101, int(ticket_quantity)):
         return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
     ticket = bn.get_ticket(ticket_name)   # have a try catch error here?
 
+    if not ticket:
+        return render_template('index.html', user=user, message="Ticket does not exist")
+
     # ticket quantity has to be more than quantity requested to buy
-    if ticket_quantity > ticket.quantity:
+    if int(ticket_quantity) > ticket.quantity:
         return render_template('index.html', user=user, message="Requested quantity larger than available tickets")
 
     # user has to have more balance than ticket price + xtra fees
-    if user.balance < (ticket.price * ticket_quantity * 1.35 * 1.05):
+    if user.balance < (ticket.price * int(ticket_quantity) * 1.35 * 1.05):
         return render_template('index.html', user=user, message="User balance not enough for purchase")
 
     # redirect and display error message if possible
     if error_message != "":
         return redirect('/', message=error_message)
     else:  # add ticket to user's profile
-        user.tickets.append(ticket)  # NEED TO CREATE A TICKET ARRAY IN USER MODEL NOT STRING
+        bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
         # Check if this works
-        ticket = bn.get_all_tickets() # get all tickets and display sell.html (?)
+        user.balance = user.balance - (ticket.price * int(ticket_quantity) * 1.35 * 1.05)
         # Now shows updated tickets for user and redirects to sell page
-        return render_template('sell.html', user=user, ticket=ticket)
+        return render_template('index.html', user=user, message="Ticket bought successfully")
 
 
 @app.route('/update', methods=['POST'])

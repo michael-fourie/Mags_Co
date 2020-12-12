@@ -66,10 +66,8 @@ def get_all_tickets():
     :return: list of all ticket instances
     """
 
-    list_of_tickets = []
-    for t in Ticket.instances:
-        list_of_tickets.append(t)
-    return list_of_tickets
+    tickets = Ticket.query.all()
+    return tickets
 
 def register_ticket(owner, name, quantity, price, date):
     """Register the ticket in the database
@@ -85,7 +83,7 @@ def register_ticket(owner, name, quantity, price, date):
     db.session.add(new_ticket)
     db.session.commit()
 
-    return None
+    return new_ticket
 """
 def get_buy_form(name,quantity):
     buy_form = Form(name=name,quantity=quantity)
@@ -100,3 +98,24 @@ def get_update():
     exp_date = ['exp_date_update_changes']
     updated_ticket = Ticket(name,quantity,price,exp_date)
     return updated_ticket
+
+def sell_ticket(name, quantity, price, date, email):
+    """
+    Create new ticket in the database
+    :param ticket_id: the id of the ticket to be updated
+    :param name: the name of the ticket
+    :param quantity: the amount of tickets for sale
+    :param price: the price of the ticket
+    :param date: the expiry date of the ticket
+    :param user: seller of the ticket
+    :return: an error message if there is any, or None if creation succeeds
+    """
+    ticket = Ticket()
+    ticket.name = name
+    ticket.quantity = quantity
+    ticket.price = price
+    ticket.date = date
+    ticket.email = email
+    db.session.add(ticket)
+    db.session.commit()
+    return None
