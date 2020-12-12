@@ -330,7 +330,7 @@ def buy_ticket(user):
         return render_template('index.html', user=user, message="Ticket bought successfully")
 
 
-@app.route('/update')
+@app.route('/update', methods=['POST'])
 @authenticate  # Needed to access instance of user
 def update_ticket(user):
     # This function will display the update ticket page to the user
@@ -338,7 +338,9 @@ def update_ticket(user):
     # This will then display the update.html page
 
     ticket_name = request.form.get('name')  # using name but should id be used instead?
-    ticket_quantity = request.form.get('quantity')
+    ticket_quantity = int(request.form.get('quantity'))
+    ticket_price = int(request.form.get('price'))
+    ticket_date = request.form.get('exp_date')
 
     error_message = ""
 
@@ -352,7 +354,7 @@ def update_ticket(user):
 
     # The name of the ticket is no longer than 60 characters
     if len(ticket_name) > 60:
-        return render_template('index.html', user=user, message="Ticket name too long")
+        return render_template('index.html', user=user, message="Ticket name is too long")
 
     # The quantity of the tickets has to be more than 0, and less than or equal to 100
     if not check_quantity(1, 101, ticket_quantity):
@@ -365,15 +367,30 @@ def update_ticket(user):
         return render_template('index.html', user=user, message="Ticket does not exist")
 
     # Price has to be of range [10, 100]
-    if not check_quantity(9, 101, ticket_quantity):
+    if not check_quantity(9, 101, ticket_price):
         return render_template('index.html', user=user, message="Invalid ticket price")
 
     # Date must be given in format YYYYMMDD
-    if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
-            int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
+    try:
+        int(ticket_date)
+    except:
+        return render_template('index.html', user=user, message="Invalid ticket date")
+
+
+    if (int(ticket_date[:4]) < 2020 or int(ticket_date[4:6]) < 0 or int(ticket_date[4:6]) > 12 or
+            int(ticket_date[6:]) < 0 or int(ticket_date[4:6]) > 31):
         return render_template('index.html', user=user, message="Invalid ticket date")
 
     # For any errors, redirect back to / and show an error message
     if error_message != "":
         return redirect('index.html', user=user, message=error_message)
+
     # If there are no errors?
+    else:
+        ticket.quantity = ticket_quantity
+        ticket.price = ticket_price
+        ticket.date = ticket_date
+        # can we change name?? look into that
+
+        return render_template('index.html', user=user, message="Successfully updated")
+
