@@ -1,6 +1,6 @@
 import pytest
 from seleniumbase import BaseCase
-from qa327.models import db, User
+from qa327.models import db, User, Ticket
 from qa327_test.conftest import base_url
 from qa327.backend import login_user
 from unittest.mock import patch
@@ -12,6 +12,11 @@ test_user = User(
     name='test_frontend',
     password=generate_password_hash('Test_frontend@')
 )
+
+test_tickets = [
+    Ticket(name='t1', price=100, quantity=2, email='test1@email.com', date='20200223'),
+    Ticket(name='t2', price=110, quantity=10, email='test2@gmail.com', date='20200314')
+ ]
 
 class BackEndUserTest(BaseCase):
 
@@ -69,4 +74,6 @@ class BackEndUserTest(BaseCase):
         self.click('input[type="submit"]')
         self.open(base_url)
         self.assert_text("Please login", "#message")
+
+
 

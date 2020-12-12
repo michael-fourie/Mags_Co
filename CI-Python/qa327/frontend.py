@@ -246,11 +246,13 @@ def check_quantity(low,high,item):
         return True
 
 
-@app.route('/sell', methods=["POST"])
+@app.route('/sell', methods=['POST', "GET"])
 @authenticate  # Needed to access instance of user
 def sell_ticket(user):
     ticket_name = request.form.get('name')
-    ticket_quantity = request.form.get('quantity')
+    ticket_quantity = int(float(request.form.get('quantity')))
+    ticket_price = float(request.form.get('price'))
+    ticket_date = request.form.get('exp_date')
     error_message = ""
 
     # There must not be a space at beginning or end, and the name mus tbe alphanumeric
@@ -262,29 +264,23 @@ def sell_ticket(user):
         return render_template('index.html', user=user, message="Ticket name is too long")
 
     # Ticket quantity must be greater than 0 and less than or equal to 100
-    if not check_quantity(1, 101, ticket_quantity):
+    if not check_quantity(0, 101, ticket_quantity):
         return render_template('index.html', user=user, message="Invalid quantity of tickets")
 
-    if error_message != "":
-        return render_template('index.html', user=user, message=error_message)
-
-    ticket = bn.get_tickets(ticket_name)
-
-    if not check_quantity(9, 101, ticket.price):
-        return render_template('index.html', user=user, message="Invalid quantity of tickets")
+    # Ticket price has to be of range [10,100]
+    if ticket_price > 100 or ticket_price < 10:
+        return render_template('index.html', user=user, message="Ticket price outside of valid range")
 
     # Ticket date must be in valid format - YYYYMMDD
     # Assumption: ticket dates will start from today (2020-11-26) and go onwards
-    if (int(ticket.date[:4]) < 2020 or int(ticket.date[4:6]) < 0 or int(ticket.date[4:6]) > 12 or
-    int(ticket.date[6:]) < 0 or int(ticket.date[4:6]) > 31):
+    if (int(ticket_date[:4]) < 2020 or int(ticket_date[4:6]) < 0 or int(ticket_date[4:6]) > 12 or
+            int(ticket_date[6:]) < 0 or int(ticket_date[4:6]) > 31):
         return render_template('index.html', user=user, message="Invalid ticket date")
 
-    if error_message != "":
-        return redirect('/', message=error_message)
-    else:
-        # Add the ticket to the user's list of tickets.
-        bn.register_ticket(ticket.date, ticket.name, ticket.quantity, ticket.price, ticket.date)
-        return render_template('buy.html', user=user, ticket=ticket)
+    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user.email)
+    tickets = bn.get_all_tickets()
+    # Add the ticket to the user's list of tickets.
+    return render_template('index.html', user=user, ticket=tickets)
 
 
 @app.route('/buy', methods=['POST'])
