@@ -112,7 +112,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
     def test_update_invalid_name_long(self, *_):
-        """ R6.2 The name of the ticket is no longer than 60 characters."""
+        """ R5.2 The name of the ticket is no longer than 60 characters."""
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
         # fill email and password
@@ -309,7 +309,7 @@ class FrontEndBuyTest(BaseCase):
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.get_ticket', return_value=test_ticket)
     def test_update_ticket_success(self, *_):
-        """The user is successful in buying a ticket"""
+        """The user is successful in updating a ticket"""
         self.open(base_url + '/logout')
         self.open(base_url + '/login')
         # fill email and password

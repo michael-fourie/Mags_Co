@@ -27,9 +27,6 @@ class User(db.Model):
     balance = db.Column(db.Integer)
     tickets = db.Column(db.String(100))
 
-
-
-
 class Form(db.Model):
     """
     A form model which hold form information
